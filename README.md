@@ -3,3 +3,8 @@
 涉及js及canvas绘图知识   
 效果： 
 https://gitxieada.github.io/Demo/js_UI/index.html
+
+2. JS实现人机大战之五子棋（AI篇）---慕课网  
+参考了[xiaomaomiao人机大战五子棋](https://github.com/xiaomaomiao/xiaomaomiao.github.io)的代码，她的注释很详细。    
+效果： 
+https://gitxieada.github.io/Demo/js_AI/index.html
