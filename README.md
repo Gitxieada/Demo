@@ -8,3 +8,7 @@ https://gitxieada.github.io/Demo/js_UI/index.html
 参考了[xiaomaomiao人机大战五子棋](https://github.com/xiaomaomiao/xiaomaomiao.github.io)的代码，她的注释很详细。    
 效果： 
 https://gitxieada.github.io/Demo/js_AI/index.html
+
+3. 电商站首页布局 - HTML&CSS实战  
+教程：[电商站首页布局实战 - HTML&CSS实战 - 课时ID-11.x](https://www.bilibili.com/video/av8710320/)  
+效果：https://gitxieada.github.io/Demo/11.xie code/index.html 
