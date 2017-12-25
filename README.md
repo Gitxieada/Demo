@@ -15,4 +15,4 @@ https://gitxieada.github.io/Demo/js_AI/index.html
 
 4. Bootstrap新闻站开发 - Bootstrap实战  
 教程：[Bootstrap新闻站开发 - Bootstrap实战](https://www.bilibili.com/video/av10373326/)  
-效果：https://gitxieada.github.io/Demo/15.xie_code/index.html 
+效果：https://gitxieada.github.io/Demo/15.xie_code/main/index.html 
