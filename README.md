@@ -28,6 +28,6 @@
 
 6. 使用vue2.0实现购物车和地址选配功能  
 
-  购物车页面演示地址：https://gitxieada.github.io/Demo/vue_shoppingcart/cart.html
+  购物车页面演示地址：http://htmlpreview.github.io/?https://github.com/Gitxieada/Demo/blob/master/vue_shoppingcart/cart.html
 
-  地址页演示地址：https://gitxieada.github.io/Demo/vue_shoppingcart/address.html
+  地址页演示地址：http://htmlpreview.github.io/?https://github.com/Gitxieada/Demo/blob/master/vue_shoppingcart/address.html
