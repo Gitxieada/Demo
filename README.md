@@ -1,4 +1,17 @@
 ## 前端项目
+
+### 2023年项目
+1. DataV＋Vue可视化项目
+
+参考了http://datav.jiaminghi.com/demo/
+　
+使用了全屏容器进行内容缩放，查看时请F11全屏以便于Demo充满屏幕。
+使用飞线图等组件，并能实时显示天气。
+
+效果： 
+https://gitxieada.github.io/Demo/datav/index.html
+
+### 2018年项目
 1. JS实现人机大战之五子棋（UI篇）---慕课网  
 
 2. 涉及js及canvas绘图知识 
