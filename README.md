@@ -9,7 +9,8 @@
 使用飞线图等组件，并能实时显示天气。
 
 效果： 
-https://gitxieada.github.io/Demo/datav/index.html
+https://gitxieada.github.io/Demo/datav/index.html 或者
+http://htmlpreview.github.io/?https://github.com/Gitxieada/Demo/blob/master/datav/index.html
 
 ### 2018年项目
 1. JS实现人机大战之五子棋（UI篇）---慕课网  
