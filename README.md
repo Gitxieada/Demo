@@ -12,6 +12,22 @@
 https://gitxieada.github.io/Demo/datav/index.html 或者
 http://htmlpreview.github.io/?https://github.com/Gitxieada/Demo/blob/master/datav/index.html
 
+2. WebRTC 
+
+参考文章：[WebRTC 从实战到未来！前端如何实现一个最简单的音视频通话？](https://juejin.cn/post/7165539003465531399#)
+
+[基于 WebRTC 的 P2P 文件传输 ](https://juejin.cn/post/7171836076246433799)
+[基于webRTC的前端远程控制系统](https://www.jianshu.com/p/ad0a7c463c79)
+
+#### 效果： 
+1. 局域网一对一实时音视频通话（手动传输本地和远程的SDP等信息来实现 P2P 通信）
+前端页面: https://gitxieada.github.io/Demo/webrtc/index.html#/
+
+2. 局域网点对点文件/文本传输(信令服务)
+信令服务: https://github.com/Gitxieada/signalServer ,pkg将NodeJS项目打包exe;
+
+前端页面: https://gitxieada.github.io/Demo/webrtc/index.html#/signal
+
 ### 2018年项目
 1. JS实现人机大战之五子棋（UI篇）---慕课网  
 
