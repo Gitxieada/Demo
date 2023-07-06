@@ -1,7 +1,7 @@
 ## 前端项目
 
 ### 2023年项目
-1. DataV＋Vue可视化项目
+1、DataV＋Vue可视化项目
 ### 技术栈: DataV + vue + axios
 
 参考了[http://datav.jiaminghi.com/demo/](http://datav.jiaminghi.com/demo/)
@@ -13,7 +13,7 @@
 [https://gitxieada.github.io/Demo/datav/index.html](https://gitxieada.github.io/Demo/datav/index.html) 或者
 [http://htmlpreview.github.io/?https://github.com/Gitxieada/Demo/blob/master/datav/index.html](http://htmlpreview.github.io/?https://github.com/Gitxieada/Demo/blob/master/datav/index.html)
 
-2. 电商平台可视化项目
+2、电商平台可视化项目
 ### 技术栈: echarts4 + vite + axios + typescript
 
 参考了[https://github.com/zoeee97/echartsDemoWithKoa2](https://github.com/zoeee97/echartsDemoWithKoa2)
@@ -24,7 +24,7 @@
 [https://gitxieada.github.io/Demo/echarts/index.html](https://gitxieada.github.io/Demo/echarts/index.html)
 
 
-3. WebRTC 
+3、WebRTC 
 ### 技术栈: react + typescript + umi + socket.io-client + webrtc-adapter
 
 ### 参考文章：
@@ -37,12 +37,12 @@
 
 
 #### 效果： 
-1. 局域网一对一实时音视频通话（手动传输本地和远程的SDP等信息来实现 P2P 通信）
+* 局域网一对一实时音视频通话（手动传输本地和远程的SDP等信息来实现 P2P 通信）
 
 ##### 展示地址： 
 [https://gitxieada.github.io/Demo/webrtc/index.html#/](https://gitxieada.github.io/Demo/webrtc/index.html#/)
 
-2. 局域网点对点文件/文本传输(信令服务)
+* 局域网点对点文件/文本传输(信令服务)
 
 信令服务: [https://github.com/Gitxieada/signalServer/releases](https://github.com/Gitxieada/signalServer/releases) 
 
@@ -53,34 +53,34 @@
 
 
 ### 2018年项目
-1. JS实现人机大战之五子棋（UI篇）---慕课网  
+1、JS实现人机大战之五子棋（UI篇）---慕课网  
 
-2. 涉及js及canvas绘图知识 
+2、涉及js及canvas绘图知识 
 
   效果： 
 
   https://gitxieada.github.io/Demo/js_UI/index.html
 
-3. JS实现人机大战之五子棋（AI篇）---慕课网 
+3、JS实现人机大战之五子棋（AI篇）---慕课网 
 
   参考了[xiaomaomiao人机大战五子棋](https://github.com/xiaomaomiao/xiaomaomiao.github.io)的代码，她的注释很详细。  
 
   效果： 
   https://gitxieada.github.io/Demo/js_AI/index.html
 
-4. 电商站首页布局 - HTML&CSS实战 
+4、电商站首页布局 - HTML&CSS实战 
 
   教程：[电商站首页布局实战 - HTML&CSS实战 - 课时ID-11.x](https://www.bilibili.com/video/av8710320/)  
 
   效果：https://gitxieada.github.io/Demo/11.xie_code/index.html 
 
-5. Bootstrap新闻站开发 - Bootstrap实战  
+5、Bootstrap新闻站开发 - Bootstrap实战  
 
   教程：[Bootstrap新闻站开发 - Bootstrap实战](https://www.bilibili.com/video/av10373326/)  
 
   效果：https://gitxieada.github.io/Demo/15.xie_code/main/index.html 
 
-6. 使用vue2.0实现购物车和地址选配功能  
+6、使用vue2.0实现购物车和地址选配功能  
 
   购物车页面演示地址：http://htmlpreview.github.io/?https://github.com/Gitxieada/Demo/blob/master/vue_shoppingcart/cart.html
 
