@@ -13,7 +13,7 @@
 [https://gitxieada.github.io/Demo/datav/index.html](https://gitxieada.github.io/Demo/datav/index.html) 或者
 [http://htmlpreview.github.io/?https://github.com/Gitxieada/Demo/blob/master/datav/index.html](http://htmlpreview.github.io/?https://github.com/Gitxieada/Demo/blob/master/datav/index.html)
 
-1. 电商平台可视化项目
+2. 电商平台可视化项目
 ### 技术栈: echarts4 + vite + axios + typescript
 
 参考了[https://github.com/zoeee97/echartsDemoWithKoa2](https://github.com/zoeee97/echartsDemoWithKoa2)
