@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>武汉2022年天气数据可视化</title>
+  <script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
+  <script src="https://cdn.jsdelivr.net/npm/echarts@5.4.3/dist/echarts.min.js" charset="utf-8"></script>
+</head>
+
+<body>
+  <div id="main" style="height: 600px;width:1000px;"></div>
+  <script>
+
+    var nameset = [];//数组初始化
+    var numset1 = [];
+    var numset2 = [];
+    //获取csv对象
+    let csv = d3.dsv(",", "text/csv;charset=gb2312"); // 逗号分割，设置编码，这样就可以正常显示中文了
+    // 获取数据
+    csv("data.csv", function (error, csvdata) {
+      if (error) {
+        console.log(error);
+      } else {
+        // console.log(csvdata)
+        for (var i = 0; i < csvdata.length; i++) {
+          // console.log(csvdata[i])
+          nameset.push(csvdata[i]["日期"]);           //对象转数组
+          numset1.push(parseFloat(csvdata[i]['最高气温']));
+          numset2.push(parseFloat(csvdata[i]['最低气温']));
+        }
+
+        var myChart = echarts.init(document.getElementById("main"));
+
+        var option = {
+          title: {
+            text: '武汉2022年天气趋势'
+          },
+          tooltip: {
+            trigger: 'axis'
+          },
+          xAxis: [
+            {
+              data: nameset,
+            }
+          ],
+          yAxis: [
+            {
+              type: 'value',
+              axisLabel: {
+                formatter: '{value} °C'
+              }
+            }
+          ],
+          series: [
+            {
+              name: '最高气温',
+              type: 'line',
+              data: numset1,
+              smooth: true,
+              markPoint: {
+                data: [
+                  { type: 'max', name: 'Max' },
+                  { type: 'min', name: 'Min' }
+                ]
+              },
+              markLine: {
+                data: [{ type: 'average', name: 'Avg' }]
+              }
+            },
+            {
+              name: '最低气温',
+              type: 'line',
+              data: numset2,
+              smooth: true,
+              markPoint: {
+                data: [
+                  { type: 'max', name: 'Max' },
+                  { type: 'min', name: 'Min' }
+                ]
+              },
+              markLine: {
+                data: [{ type: 'average', name: 'Avg' }]
+              }
+            }
+          ]
+        };
+
+        myChart.setOption(option);
+      }
+    });
+  </script>
+</body>
+
+</html>
