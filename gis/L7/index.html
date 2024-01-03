@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>L7 Demo-全球空气质量指数（AQI）</title>
+    <script src='https://unpkg.com/@antv/l7'></script>
+    <style>
+        body,
+        #map {
+            height: 100vh;
+            width: 100vw;
+            margin: 0;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="map"></div>
+    <script>
+        const scene = new L7.Scene({
+            id: 'map',
+            map: new L7.GaodeMap({
+                center: [114.30, 30.59],
+                token: '15cd8a57710d40c9b7c0e3cc120f1200',
+                zoom: 3,
+                style: 'light'
+            })
+        });
+        const zoom = new L7.Zoom({
+            zoomInTitle: '放大',
+            zoomOutTitle: '缩小',
+        });
+        scene.addControl(zoom);
+        scene.on('loaded', () => {
+            fetch('./000.json')
+                .then(res => res.json())
+                .then(data => {
+                    data = data.stations
+                    data.forEach(item => {
+                        item.g.reverse()
+                    })
+                    // {"g":[34.785278,116.085],"n":"Shan County Finance Bureau, Dan County (单县单县财政局)","u":"2024-01-03 12:00:00","a":"254","t":"+08:00","x":"S010418"}
+                    // console.log(data);
+                    const pointLayer = new L7.PointLayer()
+                        .source(data, {
+                            parser: {
+                                type: 'json',
+                                coordinates: 'g'
+                            }
+                        })
+                        .shape('circle')
+                        .color('a', (value) => {
+                            // 大于0小于50的绿色
+                            if (value > 0 && value < 50) {
+                                return '#00ff00'
+                            } else if (value > 50 && value < 100) {
+                                // 大于50小于100的蓝色
+                                return '#0000ff'
+                            } else if (value > 100) {
+                                // 大于100的红色
+                                return '#ff0000'
+                            }
+                        })
+                        .size('a', (value) => {
+                            // 根据value值设置点的大小
+                            let a = value / 100 + 2;
+                            return a;
+                        })
+                        .active(true);
+                    scene.addLayer(pointLayer);
+                    const layerPopup = new L7.LayerPopup({
+                        items: [
+                            {
+                                layer: pointLayer,
+                                fields: [
+                                    {
+                                        field: 'n',
+                                        formatField: '地址'
+                                    }, {
+                                        field: 'a',
+                                        formatField: '数值',
+                                    },
+                                ],
+                            },
+                        ],
+                        trigger: 'hover',
+                    });
+                    scene.addPopup(layerPopup);
+                });
+        });
+    </script>
+</body>
+
+</html>
