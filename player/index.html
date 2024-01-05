@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>hls/flv player(ffmepg_rtsp_rtmp)</title>
+    <style>
+        .url-input {
+            font-size: 13px;
+        }
+
+        .url-input {
+            display: flex;
+        }
+
+        .url-input label {
+            flex: initial;
+        }
+
+        .url-input input {
+            flex: auto;
+            margin-left: 8px;
+        }
+
+        .url-input button {
+            flex: initial;
+            margin-left: 8px;
+        }
+    </style>
+</head>
+
+<body>
+    <script src="https://cdn.bootcss.com/flv.js/1.4.0/flv.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
+    <div id="flvplayer">
+        <div>flv player</div>
+        <div class="url-input">
+            <label for="sURL">URL:</label>
+            <input id="sURL" type="text" value="http://192.168.0.102:8000/live/home.flv" />
+            <button onclick="flv_load()">flv_load</button>
+        </div>
+        <video id="flvVideoElement" style="width: 60%;" controls="controls"></video>
+    </div>
+
+
+    <div id="hlsplayer">
+        <div>hls player</div>
+        <div class="url-input">
+            <label for="hlsURL">URL:</label>
+            <!-- http://localhost:8000/live/home/index.m3u8 -->
+            <!-- https://sf1-cdn-tos.huoshanstatic.com/obj/media-fe/xgplayer_doc_video/hls/xgplayer-demo.m3u8 -->
+            <input id="hlsURL" type="text"
+                value="http://localhost:8000/live/home/index.m3u8" />
+            <button onclick="hls_load()">hls_load</button>
+        </div>
+        <video id="hlsVideoElement" style="width: 60%;" controls></video>
+    </div>
+
+
+    <script>
+        console.log('isSupported: ' + flvjs.isSupported());
+        flv_load();
+        function flv_load() {
+            if (flvjs.isSupported()) {//检查flvjs能否正常使用 
+                var mediaDataSource = {
+                    type: 'flv'//类型flv
+                };
+                mediaDataSource['url'] = document.getElementById('sURL').value;
+                console.log('flvUrl',mediaDataSource['url']);
+                //  mediaDataSource['url']= 'http://192.168.0.102:8000/live/home.flv'//flv文件地址
+                //  mediaDataSource['url']= 'http://localhost:8000/live/rtsp.flv'
+                //  mediaDataSource['url']= 'https://sf1-cdn-tos.huoshanstatic.com/obj/media-fe/xgplayer_doc_video/flv/xgplayer-demo-360p.flv'
+                var flvVideoElement = document.getElementById('flvVideoElement'); //使用id选择器找到第二步设置的dom元素
+                if (typeof flvPlayer !== "undefined") {
+                    if (flvPlayer != null) {
+                        flvPlayer.unload();
+                        flvPlayer.detachMediaElement();
+                        flvPlayer.destroy();
+                        flvPlayer = null;
+                        console.log('flvPlayer.destroy')
+                    }
+                }
+                flvPlayer = flvjs.createPlayer(mediaDataSource, { //创建一个新的flv播放器对象
+                    enableWorker: true,
+                    enableStashBuffer: false,
+                    stashInitialSize: 128
+                });
+                flvPlayer.attachMediaElement(flvVideoElement); //将flv视频装载进video元素内
+                flvPlayer.load();//载入视频
+                // flvPlayer.play();//自动播放
+            }
+
+        }
+
+        hls_load();
+        function hls_load() {
+            if (Hls.isSupported()) {
+                console.log('hello hls.js!');
+                var hlsUrl = document.getElementById('hlsURL').value;
+                console.log('hlsUrl',hlsUrl);
+                if (typeof hlsPlayer !== "undefined") {
+                    if (hlsPlayer != null) {
+                        console.log('hlsPlayer.destroy')
+                        hlsPlayer.destroy();
+                        hlsPlayer = null;
+                    }
+                }
+                var hlsVideoElement = document.getElementById("hlsVideoElement");
+                hlsPlayer = new Hls();
+                hlsPlayer.loadSource(hlsUrl);
+                hlsPlayer.attachMedia(hlsVideoElement);
+                hlsPlayer.on(Hls.Events.MANIFEST_PARSED, function () {
+                    // hlsVideoElement.play();
+                });
+            } else if (hlsVideoElement.canPlayType("application/vnd.apple.mpegurl")) {
+                hlsVideoElement.src = hlsUrl;
+                hlsVideoElement.addEventListener("loadedmetadata", function () {
+                    // hlsVideoElement.play();
+                });
+            }
+        }
+
+    </script>
+</body>
+
+</html>
