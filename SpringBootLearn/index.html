@@ -1,876 +1,458 @@
-<!DOCTYPE html>
-<html>
-
-<head>
-  <title>Spring Boot笔记</title>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-  <link rel="stylesheet" href="./katex.min.css"> 
-
-  <style>
-    /**
+<!DOCTYPE html><html><head>
+      <title>Spring Boot笔记</title>
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <link rel="stylesheet" href="./katex.min.css"> 
+      <style>
+      /**
  * prism.js Github theme based on GitHub's theme.
  * @author Sam Clarke
  */
-    code[class*="language-"],
-    pre[class*="language-"] {
-      color: #333;
-      background: none;
-      font-family: Consolas, "Liberation Mono", Menlo, Courier, monospace;
-      text-align: left;
-      white-space: pre;
-      word-spacing: normal;
-      word-break: normal;
-      word-wrap: normal;
-      line-height: 1.4;
-
-      -moz-tab-size: 8;
-      -o-tab-size: 8;
-      tab-size: 8;
-
-      -webkit-hyphens: none;
-      -moz-hyphens: none;
-      -ms-hyphens: none;
-      hyphens: none;
-    }
-
-    /* Code blocks */
-    pre[class*="language-"] {
-      padding: .8em;
-      overflow: auto;
-      /* border: 1px solid #ddd; */
-      border-radius: 3px;
-      /* background: #fff; */
-      background: #f5f5f5;
-    }
-
-    /* Inline code */
-    :not(pre)>code[class*="language-"] {
-      padding: .1em;
-      border-radius: .3em;
-      white-space: normal;
-      background: #f5f5f5;
-    }
-
-    .token.comment,
-    .token.blockquote {
-      color: #969896;
-    }
-
-    .token.cdata {
-      color: #183691;
-    }
-
-    .token.doctype,
-    .token.punctuation,
-    .token.variable,
-    .token.macro.property {
-      color: #333;
-    }
-
-    .token.operator,
-    .token.important,
-    .token.keyword,
-    .token.rule,
-    .token.builtin {
-      color: #a71d5d;
-    }
-
-    .token.string,
-    .token.url,
-    .token.regex,
-    .token.attr-value {
-      color: #183691;
-    }
-
-    .token.property,
-    .token.number,
-    .token.boolean,
-    .token.entity,
-    .token.atrule,
-    .token.constant,
-    .token.symbol,
-    .token.command,
-    .token.code {
-      color: #0086b3;
-    }
-
-    .token.tag,
-    .token.selector,
-    .token.prolog {
-      color: #63a35c;
-    }
-
-    .token.function,
-    .token.namespace,
-    .token.pseudo-element,
-    .token.class,
-    .token.class-name,
-    .token.pseudo-class,
-    .token.id,
-    .token.url-reference .token.variable,
-    .token.attr-name {
-      color: #795da3;
-    }
-
-    .token.entity {
-      cursor: help;
-    }
-
-    .token.title,
-    .token.title .token.punctuation {
-      font-weight: bold;
-      color: #1d3e81;
-    }
-
-    .token.list {
-      color: #ed6a43;
-    }
-
-    .token.inserted {
-      background-color: #eaffea;
-      color: #55a532;
-    }
-
-    .token.deleted {
-      background-color: #ffecec;
-      color: #bd2c00;
-    }
-
-    .token.bold {
-      font-weight: bold;
-    }
-
-    .token.italic {
-      font-style: italic;
-    }
-
-
-    /* JSON */
-    .language-json .token.property {
-      color: #183691;
-    }
-
-    .language-markup .token.tag .token.punctuation {
-      color: #333;
-    }
-
-    /* CSS */
-    code.language-css,
-    .language-css .token.function {
-      color: #0086b3;
-    }
-
-    /* YAML */
-    .language-yaml .token.atrule {
-      color: #63a35c;
-    }
-
-    code.language-yaml {
-      color: #183691;
-    }
-
-    /* Ruby */
-    .language-ruby .token.function {
-      color: #333;
-    }
-
-    /* Markdown */
-    .language-markdown .token.url {
-      color: #795da3;
-    }
-
-    /* Makefile */
-    .language-makefile .token.symbol {
-      color: #795da3;
-    }
-
-    .language-makefile .token.variable {
-      color: #183691;
-    }
-
-    .language-makefile .token.builtin {
-      color: #0086b3;
-    }
-
-    /* Bash */
-    .language-bash .token.keyword {
-      color: #0086b3;
-    }
-
-    /* highlight */
-    pre[data-line] {
-      position: relative;
-      padding: 1em 0 1em 3em;
-    }
-
-    pre[data-line] .line-highlight-wrapper {
-      position: absolute;
-      top: 0;
-      left: 0;
-      background-color: transparent;
-      display: block;
-      width: 100%;
-    }
-
-    pre[data-line] .line-highlight {
-      position: absolute;
-      left: 0;
-      right: 0;
-      padding: inherit 0;
-      margin-top: 1em;
-      background: hsla(24, 20%, 50%, .08);
-      background: linear-gradient(to right, hsla(24, 20%, 50%, .1) 70%, hsla(24, 20%, 50%, 0));
-      pointer-events: none;
-      line-height: inherit;
-      white-space: pre;
-    }
-
-    pre[data-line] .line-highlight:before,
-    pre[data-line] .line-highlight[data-end]:after {
-      content: attr(data-start);
-      position: absolute;
-      top: .4em;
-      left: .6em;
-      min-width: 1em;
-      padding: 0 .5em;
-      background-color: hsla(24, 20%, 50%, .4);
-      color: hsl(24, 20%, 95%);
-      font: bold 65%/1.5 sans-serif;
-      text-align: center;
-      vertical-align: .3em;
-      border-radius: 999px;
-      text-shadow: none;
-      box-shadow: 0 1px white;
-    }
-
-    pre[data-line] .line-highlight[data-end]:after {
-      content: attr(data-end);
-      top: auto;
-      bottom: .4em;
-    }
-
-    html body {
-      font-family: "Helvetica Neue", Helvetica, "Segoe UI", Arial, freesans, sans-serif;
-      font-size: 16px;
-      line-height: 1.6;
-      color: #333;
-      background-color: #fff;
-      overflow: initial;
-      box-sizing: border-box;
-      word-wrap: break-word
-    }
-
-    html body>:first-child {
-      margin-top: 0
-    }
-
-    html body h1,
-    html body h2,
-    html body h3,
-    html body h4,
-    html body h5,
-    html body h6 {
-      line-height: 1.2;
-      margin-top: 1em;
-      margin-bottom: 16px;
-      color: #000
-    }
-
-    html body h1 {
-      font-size: 2.25em;
-      font-weight: 300;
-      padding-bottom: .3em
-    }
-
-    html body h2 {
-      font-size: 1.75em;
-      font-weight: 400;
-      padding-bottom: .3em
-    }
-
-    html body h3 {
-      font-size: 1.5em;
-      font-weight: 500
-    }
-
-    html body h4 {
-      font-size: 1.25em;
-      font-weight: 600
-    }
-
-    html body h5 {
-      font-size: 1.1em;
-      font-weight: 600
-    }
-
-    html body h6 {
-      font-size: 1em;
-      font-weight: 600
-    }
-
-    html body h1,
-    html body h2,
-    html body h3,
-    html body h4,
-    html body h5 {
-      font-weight: 600
-    }
-
-    html body h5 {
-      font-size: 1em
-    }
-
-    html body h6 {
-      color: #5c5c5c
-    }
-
-    html body strong {
-      color: #000
-    }
-
-    html body del {
-      color: #5c5c5c
-    }
-
-    html body a:not([href]) {
-      color: inherit;
-      text-decoration: none
-    }
-
-    html body a {
-      color: #08c;
-      text-decoration: none
-    }
-
-    html body a:hover {
-      color: #00a3f5;
-      text-decoration: none
-    }
-
-    html body img {
-      max-width: 100%
-    }
-
-    html body>p {
-      margin-top: 0;
-      margin-bottom: 16px;
-      word-wrap: break-word
-    }
-
-    html body>ul,
-    html body>ol {
-      margin-bottom: 16px
-    }
-
-    html body ul,
-    html body ol {
-      padding-left: 2em
-    }
-
-    html body ul.no-list,
-    html body ol.no-list {
-      padding: 0;
-      list-style-type: none
-    }
-
-    html body ul ul,
-    html body ul ol,
-    html body ol ol,
-    html body ol ul {
-      margin-top: 0;
-      margin-bottom: 0
-    }
-
-    html body li {
-      margin-bottom: 0
-    }
-
-    html body li.task-list-item {
-      list-style: none
-    }
-
-    html body li>p {
-      margin-top: 0;
-      margin-bottom: 0
-    }
-
-    html body .task-list-item-checkbox {
-      margin: 0 .2em .25em -1.8em;
-      vertical-align: middle
-    }
-
-    html body .task-list-item-checkbox:hover {
-      cursor: pointer
-    }
-
-    html body blockquote {
-      margin: 16px 0;
-      font-size: inherit;
-      padding: 0 15px;
-      color: #5c5c5c;
-      background-color: #f0f0f0;
-      border-left: 4px solid #d6d6d6
-    }
-
-    html body blockquote>:first-child {
-      margin-top: 0
-    }
-
-    html body blockquote>:last-child {
-      margin-bottom: 0
-    }
-
-    html body hr {
-      height: 4px;
-      margin: 32px 0;
-      background-color: #d6d6d6;
-      border: 0 none
-    }
-
-    html body table {
-      margin: 10px 0 15px 0;
-      border-collapse: collapse;
-      border-spacing: 0;
-      display: block;
-      width: 100%;
-      overflow: auto;
-      word-break: normal;
-      word-break: keep-all
-    }
-
-    html body table th {
-      font-weight: bold;
-      color: #000
-    }
-
-    html body table td,
-    html body table th {
-      border: 1px solid #d6d6d6;
-      padding: 6px 13px
-    }
-
-    html body dl {
-      padding: 0
-    }
-
-    html body dl dt {
-      padding: 0;
-      margin-top: 16px;
-      font-size: 1em;
-      font-style: italic;
-      font-weight: bold
-    }
-
-    html body dl dd {
-      padding: 0 16px;
-      margin-bottom: 16px
-    }
-
-    html body code {
-      font-family: Menlo, Monaco, Consolas, 'Courier New', monospace;
-      font-size: .85em !important;
-      color: #000;
-      background-color: #f0f0f0;
-      border-radius: 3px;
-      padding: .2em 0
-    }
-
-    html body code::before,
-    html body code::after {
-      letter-spacing: -0.2em;
-      content: "\00a0"
-    }
-
-    html body pre>code {
-      padding: 0;
-      margin: 0;
-      font-size: .85em !important;
-      word-break: normal;
-      white-space: pre;
-      background: transparent;
-      border: 0
-    }
-
-    html body .highlight {
-      margin-bottom: 16px
-    }
-
-    html body .highlight pre,
-    html body pre {
-      padding: 1em;
-      overflow: auto;
-      font-size: .85em !important;
-      line-height: 1.45;
-      border: #d6d6d6;
-      border-radius: 3px
-    }
-
-    html body .highlight pre {
-      margin-bottom: 0;
-      word-break: normal
-    }
-
-    html body pre code,
-    html body pre tt {
-      display: inline;
-      max-width: initial;
-      padding: 0;
-      margin: 0;
-      overflow: initial;
-      line-height: inherit;
-      word-wrap: normal;
-      background-color: transparent;
-      border: 0
-    }
-
-    html body pre code:before,
-    html body pre tt:before,
-    html body pre code:after,
-    html body pre tt:after {
-      content: normal
-    }
-
-    html body p,
-    html body blockquote,
-    html body ul,
-    html body ol,
-    html body dl,
-    html body pre {
-      margin-top: 0;
-      margin-bottom: 16px
-    }
-
-    html body kbd {
-      color: #000;
-      border: 1px solid #d6d6d6;
-      border-bottom: 2px solid #c7c7c7;
-      padding: 2px 4px;
-      background-color: #f0f0f0;
-      border-radius: 3px
-    }
-
-    @media print {
-      html body {
-        background-color: #fff
-      }
-
-      html body h1,
-      html body h2,
-      html body h3,
-      html body h4,
-      html body h5,
-      html body h6 {
-        color: #000;
-        page-break-after: avoid
-      }
-
-      html body blockquote {
-        color: #5c5c5c
-      }
-
-      html body pre {
-        page-break-inside: avoid
-      }
-
-      html body table {
-        display: table
-      }
-
-      html body img {
-        display: block;
-        max-width: 100%;
-        max-height: 100%
-      }
-
-      html body pre,
-      html body code {
-        word-wrap: break-word;
-        white-space: pre
-      }
-    }
-
-    .markdown-preview {
-      width: 100%;
-      height: 100%;
-      box-sizing: border-box
-    }
-
-    .markdown-preview .pagebreak,
-    .markdown-preview .newpage {
-      page-break-before: always
-    }
-
-    .markdown-preview pre.line-numbers {
-      position: relative;
-      padding-left: 3.8em;
-      counter-reset: linenumber
-    }
-
-    .markdown-preview pre.line-numbers>code {
-      position: relative
-    }
-
-    .markdown-preview pre.line-numbers .line-numbers-rows {
-      position: absolute;
-      pointer-events: none;
-      top: 1em;
-      font-size: 100%;
-      left: 0;
-      width: 3em;
-      letter-spacing: -1px;
-      border-right: 1px solid #999;
-      -webkit-user-select: none;
-      -moz-user-select: none;
-      -ms-user-select: none;
-      user-select: none
-    }
-
-    .markdown-preview pre.line-numbers .line-numbers-rows>span {
-      pointer-events: none;
-      display: block;
-      counter-increment: linenumber
-    }
-
-    .markdown-preview pre.line-numbers .line-numbers-rows>span:before {
-      content: counter(linenumber);
-      color: #999;
-      display: block;
-      padding-right: .8em;
-      text-align: right
-    }
-
-    .markdown-preview .mathjax-exps .MathJax_Display {
-      text-align: center !important
-    }
-
-    .markdown-preview:not([for="preview"]) .code-chunk .btn-group {
-      display: none
-    }
-
-    .markdown-preview:not([for="preview"]) .code-chunk .status {
-      display: none
-    }
-
-    .markdown-preview:not([for="preview"]) .code-chunk .output-div {
-      margin-bottom: 16px
-    }
-
-    .scrollbar-style::-webkit-scrollbar {
-      width: 8px
-    }
-
-    .scrollbar-style::-webkit-scrollbar-track {
-      border-radius: 10px;
-      background-color: transparent
-    }
-
-    .scrollbar-style::-webkit-scrollbar-thumb {
-      border-radius: 5px;
-      background-color: rgba(150, 150, 150, 0.66);
-      border: 4px solid rgba(150, 150, 150, 0.66);
-      background-clip: content-box
-    }
-
-    html body[for="html-export"]:not([data-presentation-mode]) {
-      position: relative;
-      width: 100%;
-      height: 100%;
-      top: 0;
-      left: 0;
-      margin: 0;
-      padding: 0;
-      overflow: auto
-    }
-
-    html body[for="html-export"]:not([data-presentation-mode]) .markdown-preview {
-      position: relative;
-      top: 0
-    }
-
-    @media screen and (min-width:914px) {
-      html body[for="html-export"]:not([data-presentation-mode]) .markdown-preview {
-        padding: 2em calc(50% - 457px + 2em)
-      }
-    }
-
-    @media screen and (max-width:914px) {
-      html body[for="html-export"]:not([data-presentation-mode]) .markdown-preview {
-        padding: 2em
-      }
-    }
-
-    @media screen and (max-width:450px) {
-      html body[for="html-export"]:not([data-presentation-mode]) .markdown-preview {
-        font-size: 14px !important;
-        padding: 1em
-      }
-    }
-
-    @media print {
-      html body[for="html-export"]:not([data-presentation-mode]) #sidebar-toc-btn {
-        display: none
-      }
-    }
-
-    html body[for="html-export"]:not([data-presentation-mode]) #sidebar-toc-btn {
-      position: fixed;
-      bottom: 8px;
-      left: 8px;
-      font-size: 28px;
-      cursor: pointer;
-      color: inherit;
-      z-index: 99;
-      width: 32px;
-      text-align: center;
-      opacity: .4
-    }
-
-    html body[for="html-export"]:not([data-presentation-mode])[html-show-sidebar-toc] #sidebar-toc-btn {
-      opacity: 1
-    }
-
-    html body[for="html-export"]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 300px;
-      height: 100%;
-      padding: 32px 0 48px 0;
-      font-size: 14px;
-      box-shadow: 0 0 4px rgba(150, 150, 150, 0.33);
-      box-sizing: border-box;
-      overflow: auto;
-      background-color: inherit
-    }
-
-    html body[for="html-export"]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc::-webkit-scrollbar {
-      width: 8px
-    }
-
-    html body[for="html-export"]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc::-webkit-scrollbar-track {
-      border-radius: 10px;
-      background-color: transparent
-    }
-
-    html body[for="html-export"]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc::-webkit-scrollbar-thumb {
-      border-radius: 5px;
-      background-color: rgba(150, 150, 150, 0.66);
-      border: 4px solid rgba(150, 150, 150, 0.66);
-      background-clip: content-box
-    }
-
-    html body[for="html-export"]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc a {
-      text-decoration: none
-    }
-
-    html body[for="html-export"]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc ul {
-      padding: 0 1.6em;
-      margin-top: .8em
-    }
-
-    html body[for="html-export"]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc li {
-      margin-bottom: .8em
-    }
-
-    html body[for="html-export"]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc ul {
-      list-style-type: none
-    }
-
-    html body[for="html-export"]:not([data-presentation-mode])[html-show-sidebar-toc] .markdown-preview {
-      left: 300px;
-      width: calc(100% - 300px);
-      padding: 2em calc(50% - 457px - 150px);
-      margin: 0;
-      box-sizing: border-box
-    }
-
-    @media screen and (max-width:1274px) {
-      html body[for="html-export"]:not([data-presentation-mode])[html-show-sidebar-toc] .markdown-preview {
-        padding: 2em
-      }
-    }
-
-    @media screen and (max-width:450px) {
-      html body[for="html-export"]:not([data-presentation-mode])[html-show-sidebar-toc] .markdown-preview {
-        width: 100%
-      }
-    }
-
-    html body[for="html-export"]:not([data-presentation-mode]):not([html-show-sidebar-toc]) .markdown-preview {
-      left: 50%;
-      transform: translateX(-50%)
-    }
-
-    html body[for="html-export"]:not([data-presentation-mode]):not([html-show-sidebar-toc]) .md-sidebar-toc {
-      display: none
-    }
-
-    /* Please visit the URL below for more information: */
-    /*   https://shd101wyy.github.io/markdown-preview-enhanced/#/customize-css */
-  </style>
-</head>
-
-<body for="html-export">
-  <div class="mume markdown-preview  ">
-    <h2 class="mume-header" id="spring-boot%E7%AC%94%E8%AE%B0">Spring Boot&#x7B14;&#x8BB0;:</h2>
-
-    <p>Spring Boot + mybatis + MySQL &#x5B9E;&#x73B0;&#x4E00;&#x4E2A;&#x7528;&#x6237;&#x7BA1;&#x7406;&#x7684;demo</p>
-    <p>&#x8BED;&#x8A00;&#x73AF;&#x5883;&#xFF1A;Java: jdk1.8</p>
-    <p>&#x6570;&#x636E;&#x5E93;&#xFF1A;Mysql: mysql8.0.30</p>
-    <p>&#x540E;&#x7AEF;&#xFF1A;Spring Boot 2.x +Mybatis</p>
-    <p>&#x5F00;&#x53D1;&#x5DE5;&#x5177;&#xFF1A;SpringToolSuite4</p>
-    <p>MySQL&#x53EF;&#x89C6;&#x5316;&#x5DE5;&#x5177;&#xFF1A; DBeaver</p>
-    <p>&#x53C2;&#x8003;&#xFF1A;</p>
-    <p><a
-        href="https://blog.csdn.net/chenkunNB/article/details/115392655">STS&#x521B;&#x5EFA;SpringBoot&#x9879;&#x76EE;&#x3001;&#x6DFB;&#x52A0;jar&#x4F9D;&#x8D56;</a>
-    </p>
-    <p><a
-        href="https://blog.csdn.net/Pluted/article/details/105093521">sts&#x5982;&#x4F55;&#x6253;&#x5305;maven&#x9879;&#x76EE;</a>
-    </p>
-    <p><a
-        href="https://blog.csdn.net/aa2545662853/article/details/105455430">springboot&#x9879;&#x76EE;&#x4F7F;&#x7528;mvn&#x547D;&#x4EE4;&#x6253;&#x5305;&#x5E76;&#x8FD0;&#x884C;</a>
-    </p>
-    <p><a href="https://mvnrepository.com/">https://mvnrepository.com/</a></p>
-    <p><a href="https://developer.aliyun.com/mvn/search">https://developer.aliyun.com/mvn/search</a></p>
-    <h3 class="mume-header" id="%E4%B8%80-%E9%97%AE%E9%A2%98%E5%8F%8A%E8%A7%A3%E5%86%B3%E5%8A%9E%E6%B3%95">
-      &#x4E00;&#x3001;&#x95EE;&#x9898;&#x53CA;&#x89E3;&#x51B3;&#x529E;&#x6CD5;</h3>
-
-    <ol>
-      <li>&#x7F16;&#x8F91;yml&#x6587;&#x4EF6;&#x5C31;&#x76F4;&#x63A5;&#x5361;&#x6B7B;</li>
-    </ol>
-    <p>&#x89E3;&#x51B3;&#xFF1A;<br>
-      &#x5B89;&#x88C5;Yaml Editor&#x63D2;&#x4EF6;</p>
-    <p>&#x53C2;&#x8003;&#xFF1A;<br>
-      <a
-        href="https://blog.csdn.net/weixin_41559735/article/details/124483843">https://blog.csdn.net/weixin_41559735/article/details/124483843</a>
-    </p>
-    <ol start="2">
-      <li>Spring Tool Suite4(sts)&#x590D;&#x5236;&#x7C98;&#x8D34;&#x5361;&#x987F;</li>
-    </ol>
-    <p>&#x89E3;&#x51B3;&#xFF1A;<br>
-      &#x4F9D;&#x6B21;&#x9009;&#x62E9;&#xFF1A;Preferences -&gt; General -&gt; Editors -&gt; Text Editors -&gt;
-      Hyperlinking&#xFF0C;&#x7136;&#x540E;&#x53BB;&#x6389;Document Link Detector&#x548C;Go to
-      declaration&#x8FD9;&#x4E24;&#x9879;</p>
-    <p>&#x53C2;&#x8003;&#xFF1A;<br>
-      <a href="https://www.cnblogs.com/coder-qi/p/10704033.html">https://www.cnblogs.com/coder-qi/p/10704033.html</a>
-    </p>
-    <ol start="3">
-      <li>lombok&#x63D2;&#x4EF6;&#x5B89;&#x88C5;&#x5931;&#x8D25;</li>
-    </ol>
-    <p><a href="https://projectlombok.org/download">https://projectlombok.org/download</a></p>
-    <p><a href="https://projectlombok.org/all-versions">https://projectlombok.org/all-versions</a></p>
-    <p>&#x53C2;&#x8003;&#xFF1A;</p>
-    <p><a href="https://www.cnblogs.com/syrgdm/p/13509926.html">&#x5B89;&#x88C5;lombok&#x7684;&#x63D2;&#x4EF6;</a></p>
-    <p><a href="https://blog.csdn.net/xuguoxing123/article/details/109202641">STS4&#xFF08;Spring Tool
-        Suite4&#xFF09;&#x5B89;&#x88C5;Lombok&#x63D2;&#x4EF6;&#x603B;&#x7ED3;&#xFF08;&#x5B89;&#x88C5;&#x6B65;&#x9AA4;&#x53CA;&#x9519;&#x8BEF;&#x89E3;&#x51B3;&#x65B9;&#x6CD5;&#xFF09;</a>
-    </p>
-    <ol start="4">
-      <li>&#x89E3;&#x51B3;Fatal error compiling: &#x65E0;&#x6548;&#x7684;&#x76EE;&#x6807;&#x53D1;&#x884C;&#x7248;11</li>
-    </ol>
-    <p>&#x5728;pom.xml&#x6587;&#x4EF6;&#x4E2D;&#x4FEE;&#x6539;&#x6216;&#x6DFB;&#x52A0;</p>
-    <pre data-role="codeBlock" data-info class="language-"><code>         &lt;plugin&gt;
+code[class*="language-"],
+pre[class*="language-"] {
+  color: #333;
+  background: none;
+  font-family: Consolas, "Liberation Mono", Menlo, Courier, monospace;
+  text-align: left;
+  white-space: pre;
+  word-spacing: normal;
+  word-break: normal;
+  word-wrap: normal;
+  line-height: 1.4;
+
+  -moz-tab-size: 8;
+  -o-tab-size: 8;
+  tab-size: 8;
+
+  -webkit-hyphens: none;
+  -moz-hyphens: none;
+  -ms-hyphens: none;
+  hyphens: none;
+}
+
+/* Code blocks */
+pre[class*="language-"] {
+  padding: .8em;
+  overflow: auto;
+  /* border: 1px solid #ddd; */
+  border-radius: 3px;
+  /* background: #fff; */
+  background: #f5f5f5;
+}
+
+/* Inline code */
+:not(pre) > code[class*="language-"] {
+  padding: .1em;
+  border-radius: .3em;
+  white-space: normal;
+  background: #f5f5f5;
+}
+
+.token.comment,
+.token.blockquote {
+  color: #969896;
+}
+
+.token.cdata {
+  color: #183691;
+}
+
+.token.doctype,
+.token.punctuation,
+.token.variable,
+.token.macro.property {
+  color: #333;
+}
+
+.token.operator,
+.token.important,
+.token.keyword,
+.token.rule,
+.token.builtin {
+  color: #a71d5d;
+}
+
+.token.string,
+.token.url,
+.token.regex,
+.token.attr-value {
+  color: #183691;
+}
+
+.token.property,
+.token.number,
+.token.boolean,
+.token.entity,
+.token.atrule,
+.token.constant,
+.token.symbol,
+.token.command,
+.token.code {
+  color: #0086b3;
+}
+
+.token.tag,
+.token.selector,
+.token.prolog {
+  color: #63a35c;
+}
+
+.token.function,
+.token.namespace,
+.token.pseudo-element,
+.token.class,
+.token.class-name,
+.token.pseudo-class,
+.token.id,
+.token.url-reference .token.variable,
+.token.attr-name {
+  color: #795da3;
+}
+
+.token.entity {
+  cursor: help;
+}
+
+.token.title,
+.token.title .token.punctuation {
+  font-weight: bold;
+  color: #1d3e81;
+}
+
+.token.list {
+  color: #ed6a43;
+}
+
+.token.inserted {
+  background-color: #eaffea;
+  color: #55a532;
+}
+
+.token.deleted {
+  background-color: #ffecec;
+  color: #bd2c00;
+}
+
+.token.bold {
+  font-weight: bold;
+}
+
+.token.italic {
+  font-style: italic;
+}
+
+
+/* JSON */
+.language-json .token.property {
+  color: #183691;
+}
+
+.language-markup .token.tag .token.punctuation {
+  color: #333;
+}
+
+/* CSS */
+code.language-css,
+.language-css .token.function {
+  color: #0086b3;
+}
+
+/* YAML */
+.language-yaml .token.atrule {
+  color: #63a35c;
+}
+
+code.language-yaml {
+  color: #183691;
+}
+
+/* Ruby */
+.language-ruby .token.function {
+  color: #333;
+}
+
+/* Markdown */
+.language-markdown .token.url {
+  color: #795da3;
+}
+
+/* Makefile */
+.language-makefile .token.symbol {
+  color: #795da3;
+}
+
+.language-makefile .token.variable {
+  color: #183691;
+}
+
+.language-makefile .token.builtin {
+  color: #0086b3;
+}
+
+/* Bash */
+.language-bash .token.keyword {
+  color: #0086b3;
+}
+
+/* highlight */
+pre[data-line] {
+  position: relative;
+  padding: 1em 0 1em 3em;
+}
+pre[data-line] .line-highlight-wrapper {
+  position: absolute;
+  top: 0;
+  left: 0;
+  background-color: transparent;
+  display: block;
+  width: 100%;
+}
+
+pre[data-line] .line-highlight {
+  position: absolute;
+  left: 0;
+  right: 0;
+  padding: inherit 0;
+  margin-top: 1em;
+  background: hsla(24, 20%, 50%,.08);
+  background: linear-gradient(to right, hsla(24, 20%, 50%,.1) 70%, hsla(24, 20%, 50%,0));
+  pointer-events: none;
+  line-height: inherit;
+  white-space: pre;
+}
+
+pre[data-line] .line-highlight:before, 
+pre[data-line] .line-highlight[data-end]:after {
+  content: attr(data-start);
+  position: absolute;
+  top: .4em;
+  left: .6em;
+  min-width: 1em;
+  padding: 0 .5em;
+  background-color: hsla(24, 20%, 50%,.4);
+  color: hsl(24, 20%, 95%);
+  font: bold 65%/1.5 sans-serif;
+  text-align: center;
+  vertical-align: .3em;
+  border-radius: 999px;
+  text-shadow: none;
+  box-shadow: 0 1px white;
+}
+
+pre[data-line] .line-highlight[data-end]:after {
+  content: attr(data-end);
+  top: auto;
+  bottom: .4em;
+}html body{font-family:"Helvetica Neue",Helvetica,"Segoe UI",Arial,freesans,sans-serif;font-size:16px;line-height:1.6;color:#333;background-color:#fff;overflow:initial;box-sizing:border-box;word-wrap:break-word}html body>:first-child{margin-top:0}html body h1,html body h2,html body h3,html body h4,html body h5,html body h6{line-height:1.2;margin-top:1em;margin-bottom:16px;color:#000}html body h1{font-size:2.25em;font-weight:300;padding-bottom:.3em}html body h2{font-size:1.75em;font-weight:400;padding-bottom:.3em}html body h3{font-size:1.5em;font-weight:500}html body h4{font-size:1.25em;font-weight:600}html body h5{font-size:1.1em;font-weight:600}html body h6{font-size:1em;font-weight:600}html body h1,html body h2,html body h3,html body h4,html body h5{font-weight:600}html body h5{font-size:1em}html body h6{color:#5c5c5c}html body strong{color:#000}html body del{color:#5c5c5c}html body a:not([href]){color:inherit;text-decoration:none}html body a{color:#08c;text-decoration:none}html body a:hover{color:#00a3f5;text-decoration:none}html body img{max-width:100%}html body>p{margin-top:0;margin-bottom:16px;word-wrap:break-word}html body>ul,html body>ol{margin-bottom:16px}html body ul,html body ol{padding-left:2em}html body ul.no-list,html body ol.no-list{padding:0;list-style-type:none}html body ul ul,html body ul ol,html body ol ol,html body ol ul{margin-top:0;margin-bottom:0}html body li{margin-bottom:0}html body li.task-list-item{list-style:none}html body li>p{margin-top:0;margin-bottom:0}html body .task-list-item-checkbox{margin:0 .2em .25em -1.8em;vertical-align:middle}html body .task-list-item-checkbox:hover{cursor:pointer}html body blockquote{margin:16px 0;font-size:inherit;padding:0 15px;color:#5c5c5c;background-color:#f0f0f0;border-left:4px solid #d6d6d6}html body blockquote>:first-child{margin-top:0}html body blockquote>:last-child{margin-bottom:0}html body hr{height:4px;margin:32px 0;background-color:#d6d6d6;border:0 none}html body table{margin:10px 0 15px 0;border-collapse:collapse;border-spacing:0;display:block;width:100%;overflow:auto;word-break:normal;word-break:keep-all}html body table th{font-weight:bold;color:#000}html body table td,html body table th{border:1px solid #d6d6d6;padding:6px 13px}html body dl{padding:0}html body dl dt{padding:0;margin-top:16px;font-size:1em;font-style:italic;font-weight:bold}html body dl dd{padding:0 16px;margin-bottom:16px}html body code{font-family:Menlo,Monaco,Consolas,'Courier New',monospace;font-size:.85em !important;color:#000;background-color:#f0f0f0;border-radius:3px;padding:.2em 0}html body code::before,html body code::after{letter-spacing:-0.2em;content:"\00a0"}html body pre>code{padding:0;margin:0;font-size:.85em !important;word-break:normal;white-space:pre;background:transparent;border:0}html body .highlight{margin-bottom:16px}html body .highlight pre,html body pre{padding:1em;overflow:auto;font-size:.85em !important;line-height:1.45;border:#d6d6d6;border-radius:3px}html body .highlight pre{margin-bottom:0;word-break:normal}html body pre code,html body pre tt{display:inline;max-width:initial;padding:0;margin:0;overflow:initial;line-height:inherit;word-wrap:normal;background-color:transparent;border:0}html body pre code:before,html body pre tt:before,html body pre code:after,html body pre tt:after{content:normal}html body p,html body blockquote,html body ul,html body ol,html body dl,html body pre{margin-top:0;margin-bottom:16px}html body kbd{color:#000;border:1px solid #d6d6d6;border-bottom:2px solid #c7c7c7;padding:2px 4px;background-color:#f0f0f0;border-radius:3px}@media print{html body{background-color:#fff}html body h1,html body h2,html body h3,html body h4,html body h5,html body h6{color:#000;page-break-after:avoid}html body blockquote{color:#5c5c5c}html body pre{page-break-inside:avoid}html body table{display:table}html body img{display:block;max-width:100%;max-height:100%}html body pre,html body code{word-wrap:break-word;white-space:pre}}.markdown-preview{width:100%;height:100%;box-sizing:border-box}.markdown-preview .pagebreak,.markdown-preview .newpage{page-break-before:always}.markdown-preview pre.line-numbers{position:relative;padding-left:3.8em;counter-reset:linenumber}.markdown-preview pre.line-numbers>code{position:relative}.markdown-preview pre.line-numbers .line-numbers-rows{position:absolute;pointer-events:none;top:1em;font-size:100%;left:0;width:3em;letter-spacing:-1px;border-right:1px solid #999;-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none}.markdown-preview pre.line-numbers .line-numbers-rows>span{pointer-events:none;display:block;counter-increment:linenumber}.markdown-preview pre.line-numbers .line-numbers-rows>span:before{content:counter(linenumber);color:#999;display:block;padding-right:.8em;text-align:right}.markdown-preview .mathjax-exps .MathJax_Display{text-align:center !important}.markdown-preview:not([for="preview"]) .code-chunk .btn-group{display:none}.markdown-preview:not([for="preview"]) .code-chunk .status{display:none}.markdown-preview:not([for="preview"]) .code-chunk .output-div{margin-bottom:16px}.scrollbar-style::-webkit-scrollbar{width:8px}.scrollbar-style::-webkit-scrollbar-track{border-radius:10px;background-color:transparent}.scrollbar-style::-webkit-scrollbar-thumb{border-radius:5px;background-color:rgba(150,150,150,0.66);border:4px solid rgba(150,150,150,0.66);background-clip:content-box}html body[for="html-export"]:not([data-presentation-mode]){position:relative;width:100%;height:100%;top:0;left:0;margin:0;padding:0;overflow:auto}html body[for="html-export"]:not([data-presentation-mode]) .markdown-preview{position:relative;top:0}@media screen and (min-width:914px){html body[for="html-export"]:not([data-presentation-mode]) .markdown-preview{padding:2em calc(50% - 457px + 2em)}}@media screen and (max-width:914px){html body[for="html-export"]:not([data-presentation-mode]) .markdown-preview{padding:2em}}@media screen and (max-width:450px){html body[for="html-export"]:not([data-presentation-mode]) .markdown-preview{font-size:14px !important;padding:1em}}@media print{html body[for="html-export"]:not([data-presentation-mode]) #sidebar-toc-btn{display:none}}html body[for="html-export"]:not([data-presentation-mode]) #sidebar-toc-btn{position:fixed;bottom:8px;left:8px;font-size:28px;cursor:pointer;color:inherit;z-index:99;width:32px;text-align:center;opacity:.4}html body[for="html-export"]:not([data-presentation-mode])[html-show-sidebar-toc] #sidebar-toc-btn{opacity:1}html body[for="html-export"]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc{position:fixed;top:0;left:0;width:300px;height:100%;padding:32px 0 48px 0;font-size:14px;box-shadow:0 0 4px rgba(150,150,150,0.33);box-sizing:border-box;overflow:auto;background-color:inherit}html body[for="html-export"]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc::-webkit-scrollbar{width:8px}html body[for="html-export"]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc::-webkit-scrollbar-track{border-radius:10px;background-color:transparent}html body[for="html-export"]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc::-webkit-scrollbar-thumb{border-radius:5px;background-color:rgba(150,150,150,0.66);border:4px solid rgba(150,150,150,0.66);background-clip:content-box}html body[for="html-export"]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc a{text-decoration:none}html body[for="html-export"]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc ul{padding:0 1.6em;margin-top:.8em}html body[for="html-export"]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc li{margin-bottom:.8em}html body[for="html-export"]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc ul{list-style-type:none}html body[for="html-export"]:not([data-presentation-mode])[html-show-sidebar-toc] .markdown-preview{left:300px;width:calc(100% -  300px);padding:2em calc(50% - 457px -  150px);margin:0;box-sizing:border-box}@media screen and (max-width:1274px){html body[for="html-export"]:not([data-presentation-mode])[html-show-sidebar-toc] .markdown-preview{padding:2em}}@media screen and (max-width:450px){html body[for="html-export"]:not([data-presentation-mode])[html-show-sidebar-toc] .markdown-preview{width:100%}}html body[for="html-export"]:not([data-presentation-mode]):not([html-show-sidebar-toc]) .markdown-preview{left:50%;transform:translateX(-50%)}html body[for="html-export"]:not([data-presentation-mode]):not([html-show-sidebar-toc]) .md-sidebar-toc{display:none}
+/* Please visit the URL below for more information: */
+/*   https://shd101wyy.github.io/markdown-preview-enhanced/#/customize-css */
+
+      </style>
+        <script>
+          var _hmt = _hmt || [];
+          (function() {
+            var hm = document.createElement("script");
+            hm.src = "https://hm.baidu.com/hm.js?3a41820260366f18e094120b6107e0c1";
+            var s = document.getElementsByTagName("script")[0]; 
+            s.parentNode.insertBefore(hm, s);
+          })();
+          </script>
+    </head>
+    <body for="html-export">
+      <div class="mume markdown-preview  ">
+      <h2 class="mume-header" id="spring-boot%E7%AC%94%E8%AE%B0">Spring Boot&#x7B14;&#x8BB0;</h2>
+
+<p>&#x57FA;&#x4E8E;SpringBoot&#xFF0C;Spring Security&#xFF0C;Vue &amp; naiveUi &#x5B9E;&#x73B0;&#x7684;&#x524D;&#x540E;&#x7AEF;&#x5206;&#x79BB;&#x6743;&#x9650;&#x7BA1;&#x7406;&#x7B80;&#x6613;&#x7CFB;&#x7EDF;&#x3002;</p>
+<p>&#x5B66;&#x4E60; <a href="https://github.com/miracleren/colorOne/tree/main">https://github.com/miracleren/colorOne/tree/main</a> &#x7684;&#x9879;&#x76EE;&#x3002;</p>
+<p>&#x672C;&#x7BC7;&#x6587;&#x7AE0;&#x5305;&#x542B;&#x4E0A;&#x8FF0;&#x9879;&#x76EE;&#x7684;&#x5B66;&#x4E60;&#x3001;&#x6548;&#x679C;&#x5C55;&#x793A;&#x53CA;&#x76F8;&#x5173;&#x77E5;&#x8BC6;&#x70B9;&#x3002;</p>
+<p>&#x524D;&#x7AEF;&#xFF1A;<code>vue3&#x3001;NaiveUI</code>&#xFF1B;</p>
+<p>&#x540E;&#x7AEF;&#xFF1A;<code>SpringBoot3&#xFF0C;java17&#xFF0C;Spring Security&#xFF0C;MybatisPlus&#xFF0C;MySql&#xFF0C;redis</code>&#xFF1B;</p>
+<p>sping boot3 &#x6700;&#x4F4E;&#x7248;&#x672C;jdk17&#xFF1B;</p>
+<p>&#x5F00;&#x53D1;&#x5DE5;&#x5177;&#xFF1A;SpringToolSuite4 &#x6216; IDEA&#xFF1B;</p>
+<p>MySQL&#x53EF;&#x89C6;&#x5316;&#x5DE5;&#x5177;&#xFF1A; DBeaver&#xFF1B;</p>
+<h3 class="mume-header" id="colorone%E9%A1%B9%E7%9B%AE">colorOne&#x9879;&#x76EE;</h3>
+
+<h4 class="mume-header" id="%E6%95%88%E6%9E%9C%E5%B1%95%E7%A4%BA">&#x6548;&#x679C;&#x5C55;&#x793A;</h4>
+
+<p><img src="./demo/demo1.png" alt="&#x56FE;-demo1"><br>
+<img src="./demo/demo2.png" alt="&#x56FE;-demo2"></p>
+<h4 class="mume-header" id="%E6%95%B0%E6%8D%AE%E5%BA%93">&#x6570;&#x636E;&#x5E93;</h4>
+
+<p>&#x672C;&#x673A; mysql 8.0.30&#x3002;<br>
+&#x8BF7;&#x786E;&#x4FDD;mysql&#x3001;redis&#x542F;&#x52A8;&#x3002;<br>
+&#x5728;MySQL&#x4E2D;&#xFF0C;<code>-</code>&#xFF08;&#x4E24;&#x4E2A;&#x8FDE;&#x7EED;&#x6A2A;&#x6760; &#xFF09;&#x6CE8;&#x91CA;&#x6837;&#x5F0F;&#x8981;&#x6C42;&#x7B2C;&#x4E8C;&#x4E2A;&#x7834;&#x6298;&#x53F7;&#x540E;&#x8DDF;&#x81F3;&#x5C11;&#x4E00;&#x4E2A;&#x7A7A;&#x683C;&#x6216;&#x63A7;&#x5236;&#x5B57;&#x7B26;&#xFF08;&#x4F8B;&#x5982;&#x7A7A;&#x683C;&#xFF0C;&#x5236;&#x8868;&#x7B26;&#xFF0C;&#x6362;&#x884C;&#x7B26;&#x7B49;&#xFF09;&#x3002;system.sql&#x6587;&#x4EF6;&#x4E2D;&#x6CE8;&#x91CA;&#x683C;&#x5F0F;&#x4E0D;&#x5BF9;&#xFF0C;&#x5982; <code>-------------------------------</code> &#x7B49;&#x5730;&#x65B9;&#x7B2C;&#x4E8C;&#x4E2A;&#x7834;&#x6298;&#x53F7;&#x540E;&#x8981;&#x52A0;&#x4E0A;&#x7A7A;&#x683C;&#x3002;<br>
+&#x4FEE;&#x6539;&#x540E;&#x7684;system.sql&#x6587;&#x4EF6;&#x89C1; <a href="https://github.com/Gitxieada/Learn_Miracleren_ColorOne">https://github.com/Gitxieada/Learn_Miracleren_ColorOne</a> &#x3002;<br>
+&#x5728; <code>sql</code> &#x76EE;&#x5F55;&#x4E0B;&#x6267;&#x884C;&#x4EE5;&#x4E0B;&#x547D;&#x4EE4;&#xFF1A;<br>
+&#x4F7F;&#x7528;<code>net start</code>&#x547D;&#x4EE4;&#x67E5;&#x770B;&#x6240;&#x6709;&#x6B63;&#x5728;&#x8FD0;&#x884C;&#x7684;&#x670D;&#x52A1;&#xFF0C;&#x5176;&#x4E2D;&#x5305;&#x62EC;MySQL&#x670D;&#x52A1;&#x3002;&#x82E5;&#x6CA1;&#x6709;MySQL&#x670D;&#x52A1;&#xFF0C;&#x5219;&#x4F7F;&#x7528;<code>net start mysql</code>&#x542F;&#x52A8;&#x3002;</p>
+<ol>
+<li>&#x521B;&#x5EFA;&#x6570;&#x636E;&#x5E93;<code>colorxx</code></li>
+<li>&#x901A;&#x8FC7;source&#x547D;&#x4EE4;&#x6267;&#x884C;system.sql&#x3001;initial data .sql&#x811A;&#x672C;&#x6587;&#x4EF6;&#x5206;&#x522B;&#x521B;&#x5EFA;table&#x548C;&#x63D2;&#x5165;&#x6570;&#x636E;&#x3002;</li>
+</ol>
+<pre data-role="codeBlock" data-info="shell" class="language-shell">mysql -u root -p
+<span class="token comment"># &#x8FDB;&#x5165;&#x5230;&#x4E86;MySQL&#x7684;&#x547D;&#x4EE4;&#x884C;&#x5DE5;&#x5177;</span>
+mysql<span class="token operator">&gt;</span> create database colorxx
+ character <span class="token builtin class-name">set</span> utf8mb4
+ collate utf8mb4_0900_ai_ci<span class="token punctuation">;</span>
+<span class="token comment"># &#x67E5;&#x8BE2;&#x6570;&#x636E;&#x5E93;&#x662F;&#x5426;&#x521B;&#x5EFA;&#x6210;&#x529F;</span>
+mysql<span class="token operator">&gt;</span> show databases<span class="token punctuation">;</span>
+mysql<span class="token operator">&gt;</span> use colorxx
+Database changed
+<span class="token builtin class-name">source</span> ./system.sql<span class="token punctuation">;</span>
+<span class="token builtin class-name">source</span> ./initial data .sql<span class="token punctuation">;</span>
+</pre><p><img src="./demo/sql.png" alt="&#x56FE;-sql"><br>
+&#x77E5;&#x8BC6;&#x70B9;&#xFF1A;<br>
+utf8mb4 &#x5B57;&#x7B26;&#x96C6;&#x6709;&#x591A;&#x79CD;&#x6392;&#x5E8F;&#x89C4;&#x5219;&#xFF0C;&#x5176;&#x4E2D;&#x5E38;&#x7528;&#x7684;&#x6709; utf8mb4_general_ci &#x548C; utf8mb4_0900_ai_ci&#x3002;&#x8FD9;&#x4E24;&#x8005;&#x7684;&#x4E3B;&#x8981;&#x533A;&#x522B;&#x5728;&#x4E8E;&#x5176;&#x6392;&#x5E8F;&#x548C;&#x6BD4;&#x8F83;&#x89C4;&#x5219;&#x3002;<br>
+utf8mb4_general_ci &#x9002;&#x7528;&#x4E8E;&#x7B80;&#x5355;&#x7684;&#x3001;&#x4E0D;&#x9700;&#x8981;&#x7CBE;&#x786E; Unicode &#x652F;&#x6301;&#x7684;&#x5E94;&#x7528;&#xFF0C;&#x5177;&#x6709;&#x8F83;&#x597D;&#x7684;&#x6027;&#x80FD;&#x3002;<br>
+utf8mb4_0900_ai_ci &#x9002;&#x7528;&#x4E8E;&#x9700;&#x8981;&#x5B8C;&#x6574; Unicode &#x652F;&#x6301;&#x548C;&#x66F4;&#x7CBE;&#x786E;&#x7684;&#x6392;&#x5E8F;&#x548C;&#x6BD4;&#x8F83;&#x89C4;&#x5219;&#x7684;&#x5E94;&#x7528;&#xFF0C;&#x4F46;&#x6027;&#x80FD;&#x53EF;&#x80FD;&#x4F1A;&#x7A0D;&#x900A;&#x8272;&#x4E00;&#x4E9B;&#x3002;</p>
+<h4 class="mume-header" id="%E5%89%8D%E7%AB%AF">&#x524D;&#x7AEF;</h4>
+
+<p><code>nvm</code>&#x7BA1;&#x7406;node&#x7248;&#x672C;&#xFF0C;Vue3 &#x5B89;&#x88C5; 18.3 &#x6216;&#x66F4;&#x9AD8;&#x7248;&#x672C;&#x7684; Node.js&#x3002;<br>
+&#x5220;&#x9664;package-lock.json&#xFF0C;&#x5C06;package.json&#x91CC;&#x7684;node-sass&#x5207;&#x6362;&#x4E3A;sass&#xFF0C;&#x5373;<code>&quot;node-sass&quot;: &quot;^7.0.1&quot;,</code>&#x6362;&#x6210;<code>&quot;sass&quot;: &quot;1.77.5&quot;,</code>&#x3002;<br>
+vue.config.js &#x4FEE;&#x6539;&#x5982;&#x4E0B;&#x914D;&#x7F6E;&#xFF1A;</p>
+<pre data-role="codeBlock" data-info="js" class="language-javascript"> <span class="token comment">// &#x89E3;&#x51B3;&#x9875;&#x9762;&#x5F39;&#x51FA;&#x7EA2;&#x8272;&#x62A5;&#x9519;&#x906E;&#x7F69;&#x5C42; &#x5C06;overlay&#x8BBE;&#x7F6E;&#x4E3A;false&#x5373;&#x53EF;</span>
+module<span class="token punctuation">.</span><span class="token property-access">exports</span> <span class="token operator">=</span> <span class="token punctuation">{</span>
+  <span class="token comment">// ...</span>
+  devServer<span class="token operator">:</span> <span class="token punctuation">{</span>
+	<span class="token spread operator">...</span><span class="token punctuation">.</span><span class="token punctuation">.</span>
+	<span class="token property-access">open</span><span class="token operator">:</span> <span class="token boolean">false</span><span class="token punctuation">,</span> <span class="token comment">// &#x53D6;&#x6D88;&#x81EA;&#x52A8;&#x6253;&#x5F00;&#x6D4F;&#x89C8;&#x5668;</span>
+	<span class="token spread operator">...</span>
+    client<span class="token operator">:</span> <span class="token punctuation">{</span>
+      overlay<span class="token operator">:</span> <span class="token boolean">false</span>
+    <span class="token punctuation">}</span>
+  <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</pre><pre data-role="codeBlock" data-info class="language-"><code>nvm use 18.16.0
+npm i
+npm run serve
+</code></pre><p>&#x542F;&#x52A8;&#x6210;&#x529F;&#x540E;&#xFF0C;&#x8BBF;&#x95EE; <a href="http://127.0.0.1:818/">http://127.0.0.1:818/</a> &#x3002;</p>
+<p><strong>&#x540E;&#x7EED;&#x4F18;&#x5316;&#x70B9;</strong>&#xFF1A;&#x6784;&#x5EFA;&#x5DE5;&#x5177;&#x4ECE; Vue CLI &#x8FC1;&#x79FB;&#x5230; Vite&#xFF1B;&#x4F18;&#x5316;&#x6253;&#x5305;&#x5927;&#x5C0F;&#x3002;</p>
+<h4 class="mume-header" id="%E5%90%8E%E7%AB%AF">&#x540E;&#x7AEF;</h4>
+
+<p>&#x4FEE;&#x6539; <code>color-start\src\main\resources&#x7684;application.yml&#x3001;application-dev.yml</code>&#xFF0C;&#x914D;&#x7F6E;datasource(&#x6570;&#x636E;&#x6E90;&#x914D;&#x7F6E;)&#x3001;filePool(&#x9ED8;&#x8BA4;&#x4E0A;&#x4F20;&#x6587;&#x4EF6;&#x76EE;&#x5F55;&#x6C60;)&#x3001;redis&#x7F13;&#x5B58;&#x670D;&#x52A1;&#x914D;&#x7F6E;&#x7684;password&#x3002;</p>
+<p>&#x5728;<code>colorOne\back-end</code>&#x76EE;&#x5F55;&#x6267;&#x884C;&#x5982;&#x4E0B;&#x547D;&#x4EE4;&#xFF1A;<code>mvn install -Dmaven.test.skip=true</code>&#x3002;<br>
+&#x542F;&#x52A8;&#x9879;&#x76EE;&#xFF1A;<code>java -jar ./color-start/target/color-start.jar</code>&#x6216; <code>mvn spring-boot:run -pl color-start</code>&#x3002;<br>
+<code>-Dmaven.test.skip=true</code>&#xFF0C;&#x4E0D;&#x6267;&#x884C;&#x6D4B;&#x8BD5;&#x7528;&#x4F8B;&#xFF0C;&#x4E5F;&#x4E0D;&#x7F16;&#x8BD1;&#x6D4B;&#x8BD5;&#x7528;&#x4F8B;&#x7C7B;&#x3002;</p>
+<h3 class="mume-header" id="windows%E4%B8%AD%E5%BF%AB%E9%80%9F%E5%88%87%E6%8D%A2%E4%B8%8D%E5%90%8C%E7%9A%84java%E7%89%88%E6%9C%AC">Windows&#x4E2D;&#x5FEB;&#x901F;&#x5207;&#x6362;&#x4E0D;&#x540C;&#x7684;Java&#x7248;&#x672C;</h3>
+
+<p><a href="https://openjdk">https://openjdk</a> <a href="https://jdk.java.net/archive/">https://jdk.java.net/archive/</a><br>
+<a href="https://www.oracle.com/cn/java/technologies/downloads/">https://www.oracle.com/cn/java/technologies/downloads/</a></p>
+<p>&#x4E0B;&#x8F7D;openjdk-17.0.2_windows-x64_bin.zip &#x89E3;&#x538B;&#x5230;&#x5F53;&#x524D;&#x6587;&#x4EF6;&#x5939;&#xFF0C;&#x53EF;&#x4EE5;&#x770B;&#x5230;&#x6587;&#x4EF6;&#x5939; jdk-17.0.2&#x3002;</p>
+<p>&#x65B0;&#x589E;<code>JAVA_HOME</code>&#x73AF;&#x5883;&#x53D8;&#x91CF;&#xFF1B;&#x5220;&#x9664;&#x201C;Path&#x201D;&#x73AF;&#x5883;&#x53D8;&#x91CF;&#x4E2D;&#x4E0E;Java&#x76F8;&#x5173;&#x7684;&#x503C;&#xFF0C;&#x540C;&#x65F6;&#x5728;&quot;Path&quot;&#x73AF;&#x5883;&#x53D8;&#x91CF;&#x4E2D;&#x6DFB;&#x52A0;&#xFF1A;<code>%JAVA_HOME%\bin</code>&#xFF0C;&#x8F93;&#x5165;&#x4E0B;&#x9762;&#x7684;&#x547D;&#x4EE4;&#x6765;&#x68C0;&#x67E5;&#x4EE5;&#x4E0A;&#x8BBE;&#x7F6E;&#x662F;&#x5426;&#x6709;&#x6548;&#xFF1A;</p>
+<pre data-role="codeBlock" data-info="bash" class="language-bash"><span class="token builtin class-name">echo</span> %JAVA_HOME%
+java -version
+</pre><p>&#x4E3A;&#x6BCF;&#x4E2A;Java&#x7248;&#x672C;&#x6DFB;&#x52A0;&#x4E00;&#x4E2A;&#x811A;&#x672C;&#x6587;&#x4EF6;&#xFF0C;&#x4EE5;&#x65B9;&#x4FBF;&#x5728;&#x591A;&#x4E2A;&#x4E0D;&#x540C;Java&#x7248;&#x672C;&#x95F4;&#x8FDB;&#x884C;&#x5FEB;&#x901F;&#x5207;&#x6362;&#x3002;&#x6211;&#x5C06;&#x8FD9;&#x4E9B;&#x811A;&#x672C;&#x6587;&#x4EF6;&#x5B58;&#x653E;&#x5230;&#x76EE;&#x5F55;D:\Program Files\Java\scripts&#x4E2D;&#xFF0C;&#x7136;&#x540E;&#x5C06;&#x8BE5;&#x76EE;&#x5F55;&#x6DFB;&#x52A0;&#x5230;&quot;Path&quot;&#x73AF;&#x5883;&#x53D8;&#x91CF;&#xFF1B;<br>
+&#x8FD9;&#x4E9B;&#x811A;&#x672C;&#x6587;&#x4EF6;&#x88AB;&#x547D;&#x540D;&#x4E3A;java17.bat&#x3001;java11.bat&#x3001;java8.bat&#x7B49;&#x7B49;&#xFF0C;&#x5728;&#x6BCF;&#x4E00;&#x4E2A;&#x811A;&#x672C;&#x6587;&#x4EF6;&#x4E2D;&#xFF0C;&#x6211;&#x4EEC;&#x4F1A;&#x4FEE;&#x6539;&#x5F53;&#x524D;&#x201C;JAVA_HOME&#x201D;&#x73AF;&#x5883;&#x53D8;&#x91CF;&#x7684;&#x503C;&#x4E3A;&#x5BF9;&#x5E94;Java&#x7248;&#x672C;&#x7684;&#x4F4D;&#x7F6E;&#x3002;&#x4F8B;&#x5982;&#x4E0B;&#x9762;&#x662F;java17.bat&#x811A;&#x672C;&#x6587;&#x4EF6;&#x7684;&#x5185;&#x5BB9;&#xFF1A;</p>
+<pre data-role="codeBlock" data-info="bash" class="language-bash">@echo off
+<span class="token builtin class-name">set</span> <span class="token assign-left variable">JAVA_HOME</span><span class="token operator">=</span>F:<span class="token punctuation">\</span>jdk-17.0.2
+<span class="token builtin class-name">set</span> <span class="token assign-left variable">Path</span><span class="token operator">=</span>%JAVA_HOME%<span class="token punctuation">\</span>bin<span class="token punctuation">;</span>%Path%
+<span class="token builtin class-name">echo</span> Java <span class="token number">17</span> activated.
+</pre><p>&#x8FD9;&#x4E2A;&#x811A;&#x672C;&#x5F88;&#x7B80;&#x5355;&#xFF0C;&#x6211;&#x4EEC;&#x5728;&#x201C;Path&#x201D;&#x53D8;&#x91CF;&#x503C;&#x7684;&#x5F00;&#x5934;&#x90E8;&#x5206;&#x63D2;&#x5165;&#x4E86;&#x5F53;&#x524D;&#x8981;&#x5207;&#x6362;&#x7684;Java&#x7248;&#x672C;&#x6240;&#x5BF9;&#x5E94;&#x76EE;&#x5F55;&#x7684;&#x4F4D;&#x7F6E;&#xFF0C;&#x8BE5;&#x4F4D;&#x7F6E;&#x662F;Java&#x7248;&#x672C;&#x76EE;&#x5F55;&#x4E2D;Java.exe&#x53EF;&#x6267;&#x884C;&#x6587;&#x4EF6;&#x7684;&#x4F4D;&#x7F6E;&#xFF0C;&#x56E0;&#x6B64;&#xFF0C;&#x6BCF;&#x4E00;&#x6B21;Java&#x7248;&#x672C;&#x7684;&#x5207;&#x6362;&#x90FD;&#x4F1A;&#x5BFC;&#x81F4;&#x201C;Path&#x201D;&#x53D8;&#x91CF;&#x7684;&#x503C;&#x589E;&#x52A0;&#xFF0C;&#x4E0D;&#x8FC7;&#x8FD9;&#x4E2A;&#x53EA;&#x4F1A;&#x5F71;&#x54CD;&#x5F53;&#x524D;&#x6253;&#x5F00;&#x7684;&#x63A7;&#x5236;&#x53F0;&#xFF0C;&#x5F53;&#x63A7;&#x5236;&#x53F0;&#x88AB;&#x5173;&#x95ED;&#x540E;&#x8BE5;&#x64CD;&#x4F5C;&#x4E5F;&#x5C31;&#x5931;&#x6548;&#x4E86;&#x3002;</p>
+<pre data-role="codeBlock" data-info="bash" class="language-bash">C:<span class="token punctuation">\</span>Users<span class="token punctuation">\</span>Administrator<span class="token operator">&gt;</span>java17
+Java <span class="token number">17</span> activated.
+
+C:<span class="token punctuation">\</span>Users<span class="token punctuation">\</span>Administrator<span class="token operator">&gt;</span>java -version
+openjdk version <span class="token string">&quot;17.0.2&quot;</span> <span class="token number">2022</span>-01-18
+OpenJDK Runtime Environment <span class="token punctuation">(</span>build <span class="token number">17.0</span>.2+8-86<span class="token punctuation">)</span>
+OpenJDK <span class="token number">64</span>-Bit Server VM <span class="token punctuation">(</span>build <span class="token number">17.0</span>.2+8-86, mixed mode, sharing<span class="token punctuation">)</span>
+</pre><p>&#x9664;&#x4E86;&#x4E0A;&#x8FF0;&#x811A;&#x672C;&#xFF0C;&#x8FD8;&#x53EF;&#x4EE5;&#x5229;&#x7528;jenv&#x6765;&#x5207;&#x6362;&#x7248;&#x672C;&#x3002;<a href="https://github.com/jenv/jenv">https://github.com/jenv/jenv</a>&#x3000;&#xFF0C;&#x3000;windows&#x7248;&#x672C;&#x4F7F;&#x7528;jenv for windows <a href="https://github.com/FelixSelter/JEnv-for-Windows">https://github.com/FelixSelter/JEnv-for-Windows</a>&#x3000;&#x3002;</p>
+<h3 class="mume-header" id="idea">IDEA</h3>
+
+<ul>
+<li>&#x4E3A;&#x5F53;&#x524D;&#x9879;&#x76EE;&#x914D;&#x7F6E; JDK</li>
+</ul>
+<p>1&#x3001;&#x4F9D;&#x6B21;&#x70B9;&#x51FB;&#x83DC;&#x5355;&#x680F; File -&gt; Project Structrue<br>
+2&#x3001;&#x70B9;&#x51FB; SDKs -&gt; + -&gt; Add JDK ... &#xFF0C;&#x5F00;&#x59CB;&#x6DFB;&#x52A0;&#x65B0;&#x7684; JDK<br>
+3&#x3001;&#x9009;&#x62E9;&#x65B0;&#x7684; JDK &#x5B89;&#x88C5;&#x76EE;&#x5F55;&#xFF0C;&#x8FD9;&#x91CC;&#x65B0;&#x6DFB;&#x52A0;&#x7684; JDK 17, &#x7136;&#x540E;&#x70B9;&#x51FB;&#x3010;OK&#x3011;&#x6309;&#x94AE;<br>
+4&#x3001;&#x6DFB;&#x52A0; JDK &#x6210;&#x529F;&#x540E;&#xFF0C;&#x5217;&#x8868;&#x4E2D;&#x5373;&#x53EF;&#x770B;&#x5230;&#x65B0;&#x6DFB;&#x52A0;&#x7684; JDK<br>
+5&#x3001;&#x70B9;&#x51FB; Project &#x83DC;&#x5355;&#xFF0C;&#x5C06;&#x5F53;&#x524D;&#x9879;&#x76EE;&#x7684; SDK &#x7248;&#x672C;&#x5207;&#x6362;&#x4E3A; 17 &#xFF0C; &#x6700;&#x540E;&#xFF0C;&#x70B9;&#x51FB; Apply | OK &#x6309;&#x94AE;&#xFF0C;&#x5E94;&#x7528;&#x65B0;&#x7684;&#x8BBE;&#x7F6E;&#xFF0C;&#x5373;&#x53EF;&#x5C06;&#x5F53;&#x524D;&#x9879;&#x76EE;&#x7684; JDK &#x7248;&#x672C;&#x5207;&#x6362;&#x5230; 17 &#x4E86;&#x3002;</p>
+<ul>
+<li>&#x5168;&#x5C40;&#x914D;&#x7F6E; JDK</li>
+</ul>
+<p>&#x4F9D;&#x6B21;&#x70B9;&#x51FB;&#x83DC;&#x5355; File | New Projects Setup | Structure<br>
+&#x540E;&#x7EED;&#x7684;&#x64CD;&#x4F5C;&#x6B65;&#x9AA4;&#x548C;&#x4E0A;&#x9762;&#x4E00;&#x6837;&#x3002;&#x8BBE;&#x7F6E;&#x5B8C;&#x6210;&#x540E;&#xFF0C;&#x65B0;&#x5EFA;&#x7684;&#x9879;&#x76EE;&#x5C31;&#x4F1A;&#x7EDF;&#x4E00;&#x9ED8;&#x8BA4;&#x4F7F;&#x7528;&#x4F60;&#x8BBE;&#x7F6E;&#x7684; JDK &#x7248;&#x672C;&#x4E86;&#x3002;</p>
+<ul>
+<li>&#x4E3A;&#x5F53;&#x524D;&#x9879;&#x76EE;&#x914D;&#x7F6E; Maven &#x7248;&#x672C;&#xFF1B;</li>
+</ul>
+<p>&#x4F9D;&#x6B21;&#x70B9;&#x51FB; IDEA &#x83DC;&#x5355;&#x680F; &#xFF1A;File | Settings :<br>
+&#x627E;&#x5230; Maven &#x914D;&#x7F6E;&#x680F;&#xFF0C;&#x914D;&#x7F6E;&#x5982;&#x4E0B;&#x4E09;&#x70B9;&#xFF1A;</p>
+<pre data-role="codeBlock" data-info class="language-"><code>    Maven home path : &#x8BBE;&#x7F6E; Maven &#x5B89;&#x88C5;&#x76EE;&#x5F55;&#xFF1B;
+    User settings file : &#x9009;&#x62E9; Maven &#x7684;&#x914D;&#x7F6E;&#x6587;&#x4EF6;&#xFF1B;
+    Local repository : &#x8BBE;&#x7F6E; Maven &#x672C;&#x5730;&#x4ED3;&#x5E93;&#x8DEF;&#x5F84;&#xFF0C;&#x7528;&#x4E8E;&#x7EDF;&#x4E00;&#x5B58;&#x653E;&#x9879;&#x76EE;&#x4F9D;&#x8D56;&#x7684; Jar &#x5305;&#xFF1B;
+</code></pre><ul>
+<li>&#x5168;&#x5C40;&#x914D;&#x7F6E; Maven &#x7248;&#x672C;&#xFF1B;</li>
+</ul>
+<p>&#x4F9D;&#x6B21;&#x70B9;&#x51FB;&#x83DC;&#x5355;<code>File | New Projects Setup | Settings for New Projects</code> &#xFF0C;&#x540E;&#x7EED;&#x7684;&#x6B65;&#x9AA4;&#x548C;&#x4E0A;&#x9762;&#x4E00;&#x6837;&#xFF0C;&#x627E;&#x5230; Maven &#x914D;&#x7F6E;&#x83DC;&#x5355;&#xFF0C;&#x914D;&#x7F6E;&#x4E0A;&#x5373;&#x53EF; &#x3002;</p>
+<h4 class="mume-header" id="%E5%BF%AB%E6%8D%B7%E9%94%AE">&#x5FEB;&#x6377;&#x952E;</h4>
+
+<ul>
+<li>&#x5173;&#x4E8E;lombok&#x548C;idea&#x5FEB;&#x6377;&#x952E;&#x751F;&#x6210;&#x7684;getter&#x548C;setter&#x65B9;&#x6CD5;</li>
+</ul>
+<p>&#x70B9;&#x51FB;Code-&gt;&#x70B9;&#x51FB;Generate&#x6216;&#x5FEB;&#x6377;&#x952E;<code>Alt+Insert</code>&#xFF0C;&#x53EF;&#x5524;&#x51FA;&#x9009;&#x62E9;&#x9762;&#x677F;&#xFF0C;&#x70B9;&#x51FB;Getter and Setter&#xFF0C;&#x6309;&#x4F4F;Shift&#x952E;&#xFF0C;&#x9009;&#x62E9;&#x9700;&#x8981;&#x751F;&#x6210;Getter/Setter&#x65B9;&#x6CD5;&#x7684;&#x53D8;&#x91CF;&#xFF0C;&#x70B9;&#x51FB;OK&#x3002;</p>
+<ul>
+<li>&#x5FEB;&#x901F;&#x5B9E;&#x73B0;&#x63A5;&#x53E3;&#x65B9;&#x6CD5;&#x7684;&#x5FEB;&#x6377;&#x952E; <code>Ctrl+I</code></li>
+</ul>
+<h4 class="mume-header" id="%E9%85%8D%E7%BD%AE">&#x914D;&#x7F6E;</h4>
+
+<p>IDEA &#x81EA;&#x52A8;&#x5BFC;&#x5305;&amp;&#x5220;&#x9664;&#x5305;&#xFF1A;&#x70B9;&#x51FB;&#x83DC;&#x5355;<code>File -&gt; Preferences / Settings -&gt; Editor -&gt; General -&gt; Auto Import</code>, &#x52FE;&#x9009;&#x4E24;&#x4E2A;&#x9009;&#x9879;&#xFF1A;<code>Add unambiguous import on the fly&#x3001;Optimize imports on the fly</code>&#xFF0C;&#x70B9;&#x51FB;&#x5E94;&#x7528;&#xFF0C;&#x4E4B;&#x540E; IDEA &#x4F1A;&#x5E2E;&#x52A9;&#x4F60;&#x81EA;&#x52A8;&#x5BFC;&#x5165;&#x5305;&#xFF08;&#x552F;&#x4E00;&#x786E;&#x5B9A;&#x65F6;&#x624D;&#x4F1A;&#x751F;&#x6548;&#xFF09;&#xFF0C;&#x4EE5;&#x53CA;&#x5220;&#x9664;&#x6CA1;&#x6709;&#x88AB;&#x7528;&#x5230;&#x7684;&#x5BFC;&#x5165;&#x5305;&#x3002;</p>
+<p>&#x5728;&#x9879;&#x76EE;&#x5F00;&#x53D1;&#x8FC7;&#x7A0B;&#x4E2D;&#xFF0C;&#x4F7F;&#x7528;&#x57FA;&#x4E8E;&#x5B57;&#x6BB5;&#x53D8;&#x91CF;&#x7684;&#x4F9D;&#x8D56;&#x6CE8;&#x5165;&#xFF08;&#x901A;&#x8FC7;&#x6CE8;&#x89E3;@Autowired&#x8FDB;&#x884C;&#x6CE8;&#x5165;&#xFF09;&#x65F6;&#x51FA;&#x73B0;&#x4E00;&#x4E2A;&#x9EC4;&#x8272;&#x8B66;&#x544A;,&#x63D0;&#x793A; &#x201C; field injection is not recommended &#x201D;&#xFF0C;&#x975E;&#x5E38;&#x522B;&#x626D;<br>
+&#x89E3;&#x51B3;&#x65B9;&#x6848;: <code>Settings-&gt;Editor-&gt;Inspections-&gt;Spring-&gt;Spring Core-&gt;Code-&gt;Field Injection warning&#x5C06;Severity&#x5C5E;&#x6027;&#x503C;&#x6539;&#x4E3A; &#x201C; No highlighting,only fix</code>&#x3002;</p>
+<p>[Intellij] Project Structure &#x914D;&#x7F6E;&#x8BF4;&#x660E; <a href="https://www.cnblogs.com/avivaye/p/6524350.html">https://www.cnblogs.com/avivaye/p/6524350.html</a></p>
+<h3 class="mume-header" id="springtoolsuite4sts">SpringToolSuite4&#xFF08;STS&#xFF09;</h3>
+
+<p><a href="https://spring.io/tools">https://spring.io/tools</a></p>
+<p>Spring Tool &#x5386;&#x53F2;&#x7248;&#x672C;&#x4E0B;&#x8F7D;&#xFF1A;<a href="https://www.cnblogs.com/lihw-study/p/16750247.html">https://www.cnblogs.com/lihw-study/p/16750247.html</a></p>
+<p>&#x5B89;&#x88C5;&#x914D;&#x7F6E;&#x53C2;&#x8003;&#xFF1A;<a href="https://zhuanlan.zhihu.com/p/339711738">https://zhuanlan.zhihu.com/p/339711738</a></p>
+<p><a href="https://blog.csdn.net/chenkunNB/article/details/115392655">STS&#x521B;&#x5EFA;SpringBoot&#x9879;&#x76EE;&#x3001;&#x6DFB;&#x52A0;jar&#x4F9D;&#x8D56;</a></p>
+<p><a href="https://blog.csdn.net/Pluted/article/details/105093521">sts&#x5982;&#x4F55;&#x6253;&#x5305;maven&#x9879;&#x76EE;</a></p>
+<p><a href="https://blog.csdn.net/aa2545662853/article/details/105455430">springboot&#x9879;&#x76EE;&#x4F7F;&#x7528;mvn&#x547D;&#x4EE4;&#x6253;&#x5305;&#x5E76;&#x8FD0;&#x884C;</a></p>
+<h4 class="mume-header" id="%E9%A1%B9%E7%9B%AE%E8%BF%90%E8%A1%8C-%E6%89%93%E5%8C%85">&#x9879;&#x76EE;&#x8FD0;&#x884C;&#x3001;&#x6253;&#x5305;</h4>
+
+<ul>
+<li>STS&#x914D;&#x7F6E;JDK</li>
+</ul>
+<p>&#x70B9;&#x51FB;windows--Preferences--Java--Installed JRE,&#x70B9;&#x51FB;&#x53F3;&#x8FB9;&#x7684;Add-&#x9009;&#x62E9;Standard VM-next,&#x627E;&#x5230;&#x4F60;&#x7684;java&#x6587;&#x4EF6;&#x8DEF;&#x5F84;<code>F:\jdk-17.0.2</code></p>
+<ul>
+<li>STS&#x914D;&#x7F6E;maven</li>
+</ul>
+<p>&#x70B9;&#x51FB;windows--Preferences--Maven--User Settings,&#x70B9;&#x51FB;&#x53F3;&#x8FB9;&#x7684;Browse,&#x627E;&#x5230;&#x4F60;&#x7684;maven&#x6587;&#x4EF6;&#x76EE;&#x5F55;&#x4E0B;&#x7684;conf--settings&#x6587;&#x4EF6;&#xFF0C;&#x786E;&#x8BA4;&#x65E0;&#x8BEF;&#x540E;apply&#x5373;&#x53EF;&#x3002;</p>
+<ul>
+<li>&#x8FD0;&#x884C;</li>
+</ul>
+<p>&#x9009;&#x4E2D;&#x9879;&#x76EE;&#x2013;&gt;&#x83DC;&#x5355;&#x680F;Run&#x2013;&gt;Run (Spring boot App)&#x6216;&#x8005;&#x76F4;&#x63A5;&#x5230;&#x5DE5;&#x5177;&#x680F;&#x627E;&#x5230;&#x5FEB;&#x6377;&#x6309;&#x94AE;&#xFF08;&#x7EFF;&#x8272;&#x53F3;&#x7BAD;&#x5934;&#xFF09;&#xFF0C;&#x70B9;&#x51FB;&#x3002;&#x63A5;&#x4E0B;&#x6765;&#x5C31;&#x53EF;&#x4EE5;&#x770B;&#x5230;&#x5728;STS&#x4E2D;&#x7684;console(&#x63A7;&#x5236;&#x53F0;)&#x4E2D;&#x770B;&#x5230;Web &#x670D;&#x52A1;&#x542F;&#x52A8;&#x7684;&#x8FC7;&#x7A0B;&#x4E86;&#xFF0C;&#x6CA1;&#x6709;&#x51FA;&#x73B0;&#x9519;&#x8BEF;&#xFF0C;<code>Tomcat initialized with port(s): 8080 (http)</code>&#xFF0C;&#x6253;&#x5F00;&#x6D4F;&#x89C8;&#x5668;&#xFF0C;&#x8F93;&#x5165; <a href="http://localhost:8080">http://localhost:8080</a> &#x56DE;&#x8F66;&#x53EF;&#x770B;&#x5230;&#x8F93;&#x51FA;&#x3002;</p>
+<ul>
+<li>&#x6253;&#x5305;springboot&#x9879;&#x76EE;</li>
+</ul>
+<p>&#x53F3;&#x952E;&#x8981;&#x6253;&#x5305;&#x7684;&#x9879;&#x76EE;&#xFF0C;&#x70B9;&#x51FB;<code>Run As&#x2014;&#x2014;maven build...</code>&#xFF0C;&#x5728;goals&#x4E2D;&#x586B;&#x5165;&#x4F60;&#x8981;&#x6267;&#x884C;&#x7684;maven&#x547D;&#x4EE4;&#xFF0C;&#x5982;&#x679C;&#x4E0D;&#x60F3;&#x7B49;&#x5F85;&#x592A;&#x957F;&#x65F6;&#x95F4;&#xFF0C;&#x9700;&#x8981;&#x8DF3;&#x8FC7;&#x6D4B;&#x8BD5;&#x9636;&#x6BB5;(skip tests)&#x5C31;&#x5C06;&#x5176;&#x52FE;&#x4E0A;&#xFF0C;&#x70B9;&#x51FB;Run&#xFF0C;&#x67E5;&#x770B;&#x63A7;&#x5236;&#x53F0;&#x4FE1;&#x606F;&#xFF0C;&#x5982;&#x679C;&#x73B0;&#x5B9E;build success&#x5219;&#x6253;&#x5305;&#x6210;&#x529F;&#xFF0C;&#x751F;&#x6210;&#x7684;jar&#x5305;&#x5728;&#x9879;&#x76EE;target&#x76EE;&#x5F55;&#x4E0B;&#x3002;&#x3000;<br>
+&#x53F3;&#x952E;&#x8981;&#x6253;&#x5305;&#x7684;&#x9879;&#x76EE;&#xFF0C;&#x70B9;&#x51FB;<code>Run As&#x2014;&#x2014;Run Configurations...</code> &#xFF0C;&#x6253;&#x5F00;<code>Run Configurations</code>&#x5F39;&#x7A97;&#xFF0C;&#x5728;Maven Build&#x91CC;&#x7F16;&#x8F91;&#x521A;&#x624D;&#x4FDD;&#x5B58;&#x7684;&#x6784;&#x5EFA;&#x547D;&#x4EE4;&#x3002;&#x5230;&#x5DE5;&#x5177;&#x680F;&#x627E;&#x5230;&#x5FEB;&#x6377;&#x6309;&#x94AE;&#xFF08;&#x7EFF;&#x8272;&#x53F3;&#x7BAD;&#x5934;&#xFF09;,&#x4E0B;&#x62C9;&#x5217;&#x8868;&#x6709;&#x521A;&#x624D;&#x914D;&#x7F6E;&#x7684;maven build Configuration&#x3002;</p>
+<h4 class="mume-header" id="%E5%AE%89%E8%A3%85%E9%85%8D%E7%BD%AE%E9%81%87%E5%88%B0%E7%9A%84%E9%97%AE%E9%A2%98%E5%8F%8A%E8%A7%A3%E5%86%B3%E5%8A%9E%E6%B3%95">&#x5B89;&#x88C5;&#x914D;&#x7F6E;&#x9047;&#x5230;&#x7684;&#x95EE;&#x9898;&#x53CA;&#x89E3;&#x51B3;&#x529E;&#x6CD5;</h4>
+
+<ul>
+<li>1 &#x7F16;&#x8F91;yml&#x6587;&#x4EF6;&#x5C31;&#x76F4;&#x63A5;&#x5361;&#x6B7B;</li>
+</ul>
+<p>&#x89E3;&#x51B3;&#xFF1A;<br>
+&#x5B89;&#x88C5;Yaml Editor&#x63D2;&#x4EF6;</p>
+<p>&#x53C2;&#x8003;&#xFF1A;<br>
+<a href="https://blog.csdn.net/weixin_41559735/article/details/124483843">https://blog.csdn.net/weixin_41559735/article/details/124483843</a></p>
+<ul>
+<li>2 Spring Tool Suite4(sts)&#x590D;&#x5236;&#x7C98;&#x8D34;&#x5361;&#x987F;</li>
+</ul>
+<p>&#x89E3;&#x51B3;&#xFF1A;<br>
+&#x4F9D;&#x6B21;&#x9009;&#x62E9;&#xFF1A;Preferences -&gt; General -&gt; Editors -&gt; Text Editors -&gt; Hyperlinking&#xFF0C;&#x7136;&#x540E;&#x53BB;&#x6389;Document Link Detector&#x548C;Go to declaration&#x8FD9;&#x4E24;&#x9879;</p>
+<p>&#x53C2;&#x8003;&#xFF1A;<br>
+<a href="https://www.cnblogs.com/coder-qi/p/10704033.html">https://www.cnblogs.com/coder-qi/p/10704033.html</a></p>
+<ul>
+<li>3 lombok&#x63D2;&#x4EF6;&#x5B89;&#x88C5;&#x5931;&#x8D25;</li>
+</ul>
+<p><a href="https://projectlombok.org/download">https://projectlombok.org/download</a></p>
+<p><a href="https://projectlombok.org/all-versions">https://projectlombok.org/all-versions</a></p>
+<p>&#x53C2;&#x8003;&#xFF1A;</p>
+<p><a href="https://www.cnblogs.com/syrgdm/p/13509926.html">&#x5B89;&#x88C5;lombok&#x7684;&#x63D2;&#x4EF6;</a></p>
+<p><a href="https://blog.csdn.net/xuguoxing123/article/details/109202641">STS4&#xFF08;Spring Tool Suite4&#xFF09;&#x5B89;&#x88C5;Lombok&#x63D2;&#x4EF6;&#x603B;&#x7ED3;&#xFF08;&#x5B89;&#x88C5;&#x6B65;&#x9AA4;&#x53CA;&#x9519;&#x8BEF;&#x89E3;&#x51B3;&#x65B9;&#x6CD5;&#xFF09;</a></p>
+<ul>
+<li>4 &#x89E3;&#x51B3;Fatal error compiling: &#x65E0;&#x6548;&#x7684;&#x76EE;&#x6807;&#x53D1;&#x884C;&#x7248;11</li>
+</ul>
+<p>&#x5728;pom.xml&#x6587;&#x4EF6;&#x4E2D;&#x4FEE;&#x6539;&#x6216;&#x6DFB;&#x52A0;</p>
+<pre data-role="codeBlock" data-info class="language-"><code>         &lt;plugin&gt;
   			&lt;groupId&gt;org.apache.maven.plugins&lt;/groupId&gt;
   			&lt;artifactId&gt;maven-compiler-plugin&lt;/artifactId&gt;
   			&lt;version&gt;${maven-compiler-plugin.version}&lt;/version&gt;
@@ -880,47 +462,24 @@
   				&lt;encoding&gt;${project.build.sourceEncoding}&lt;/encoding&gt;
   			&lt;/configuration&gt;
   	 &lt;/plugin&gt;
-</code></pre>
-    <p>&#x53C2;&#x8003;&#xFF1A; <a
-        href="https://www.cnblogs.com/zhaixingzhu/p/12859006.html">https://www.cnblogs.com/zhaixingzhu/p/12859006.html</a>
-    </p>
-    <h3 class="mume-header" id="%E4%BA%8C-%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE">
-      &#x4E8C;&#x3001;&#x73AF;&#x5883;&#x914D;&#x7F6E;</h3>
+</code></pre><p>&#x53C2;&#x8003;&#xFF1A; <a href="https://www.cnblogs.com/zhaixingzhu/p/12859006.html">https://www.cnblogs.com/zhaixingzhu/p/12859006.html</a></p>
+<h4 class="mume-header" id="mysql-%E5%8F%8A-dbeavermysql%E5%8F%AF%E8%A7%86%E5%8C%96%E5%B7%A5%E5%85%B7">MySQL &#x53CA; DBeaver&#xFF08;MySQL&#x53EF;&#x89C6;&#x5316;&#x5DE5;&#x5177;&#xFF09;</h4>
 
-    <h4 class="mume-header" id="1-springtoolsuite4">1. SpringToolSuite4</h4>
+<h4 class="mume-header" id="mysql%E5%AE%89%E8%A3%85">mysql&#x5B89;&#x88C5;</h4>
 
-    <p><a href="https://spring.io/tools">https://spring.io/tools</a></p>
-    <p>Spring Tool &#x5386;&#x53F2;&#x7248;&#x672C;&#x4E0B;&#x8F7D;&#xFF1A;<a
-        href="https://www.cnblogs.com/lihw-study/p/16750247.html">https://www.cnblogs.com/lihw-study/p/16750247.html</a>
-    </p>
-    <p>&#x53C2;&#x8003;&#xFF1A;<a
-        href="https://zhuanlan.zhihu.com/p/339711738">https://zhuanlan.zhihu.com/p/339711738</a></p>
-    <h4 class="mume-header" id="2-mysql-%E5%8F%8A-dbeavermysql%E5%8F%AF%E8%A7%86%E5%8C%96%E5%B7%A5%E5%85%B7">2. MySQL
-      &#x53CA; DBeaver&#xFF08;MySQL&#x53EF;&#x89C6;&#x5316;&#x5DE5;&#x5177;&#xFF09;</h4>
-
-    <h4 class="mume-header" id="21-mysql%E5%AE%89%E8%A3%85">2.1 mysql&#x5B89;&#x88C5;</h4>
-
-    <p><a href="https://dev.mysql.com/downloads/mysql/">https://dev.mysql.com/downloads/mysql/</a></p>
-    <p>&#x53C2;&#x8003;&#x6587;&#x7AE0;&#xFF1A;</p>
-    <p><a
-        href="https://blog.csdn.net/qq_41333844/article/details/102410214">https://blog.csdn.net/qq_41333844/article/details/102410214</a>
-    </p>
-    <p><a href="https://www.runoob.com/mysql/mysql-install.html">https://www.runoob.com/mysql/mysql-install.html</a></p>
-    <p>&#x4E0B;&#x8F7D;<a
-        href="https://cdn.mysql.com/archives/mysql-8.0/mysql-8.0.30-winx64.zip">mysql-8.0.30-winx64.zip</a></p>
-    <p>&#x4E0B;&#x8F7D;&#x5B8C;&#x540E;&#xFF0C;&#x6211;&#x4EEC;&#x5C06; zip
-      &#x5305;&#x89E3;&#x538B;&#x5230;&#x76F8;&#x5E94;&#x7684;&#x76EE;&#x5F55;</p>
-    <p>&#x6253;&#x5F00;&#x521A;&#x521A;&#x89E3;&#x538B;&#x7684;&#x6587;&#x4EF6;&#x5939;F:\mysql-8.0.30-winx64</p>
-    <p>1&#x3001;&#x914D;&#x7F6E;&#x73AF;&#x5883;&#x53D8;&#x91CF;</p>
-    <p><code>MYSQL_HOME&#xFF1A;F:\mysql-8.0.30-winx64</code></p>
-    <p><code>Path&#xFF1A;%MYSQL_HOME%\bin</code></p>
-    <p>&#x914D;&#x7F6E;&#x5B8C;&#x6210;&#x540E;&#xFF0C;cmd&#x8F93;&#x5165;&#x547D;&#x4EE4;
-      <code>mysql --version</code>&#xFF0C;&#x5373;&#x53EF;&#x67E5;&#x770B;&#x662F;&#x5426;&#x914D;&#x7F6E;&#x6210;&#x529F;
-    </p>
-    <p>&#x5728;&#x8BE5;&#x6587;&#x4EF6;&#x5939;&#x4E0B;&#x521B;&#x5EFA; my.ini
-      &#x914D;&#x7F6E;&#x6587;&#x4EF6;&#xFF0C;&#x7F16;&#x8F91; my.ini
-      &#x914D;&#x7F6E;&#x4EE5;&#x4E0B;&#x57FA;&#x672C;&#x4FE1;&#x606F;</p>
-    <pre data-role="codeBlock" data-info="ini" class="language-ini"><span class="token header"><span class="token punctuation">[</span><span class="token section-name selector">client</span><span class="token punctuation">]</span></span>
+<p><a href="https://dev.mysql.com/downloads/mysql/">https://dev.mysql.com/downloads/mysql/</a></p>
+<p>&#x53C2;&#x8003;&#x6587;&#x7AE0;&#xFF1A;</p>
+<p><a href="https://blog.csdn.net/qq_41333844/article/details/102410214">https://blog.csdn.net/qq_41333844/article/details/102410214</a></p>
+<p><a href="https://www.runoob.com/mysql/mysql-install.html">https://www.runoob.com/mysql/mysql-install.html</a></p>
+<p>&#x4E0B;&#x8F7D;<a href="https://cdn.mysql.com/archives/mysql-8.0/mysql-8.0.30-winx64.zip">mysql-8.0.30-winx64.zip</a></p>
+<p>&#x4E0B;&#x8F7D;&#x5B8C;&#x540E;&#xFF0C;&#x6211;&#x4EEC;&#x5C06; zip &#x5305;&#x89E3;&#x538B;&#x5230;&#x76F8;&#x5E94;&#x7684;&#x76EE;&#x5F55;</p>
+<p>&#x6253;&#x5F00;&#x521A;&#x521A;&#x89E3;&#x538B;&#x7684;&#x6587;&#x4EF6;&#x5939;F:\mysql-8.0.30-winx64</p>
+<p>1&#x3001;&#x914D;&#x7F6E;&#x73AF;&#x5883;&#x53D8;&#x91CF;</p>
+<p><code>MYSQL_HOME&#xFF1A;F:\mysql-8.0.30-winx64</code></p>
+<p><code>Path&#xFF1A;%MYSQL_HOME%\bin</code></p>
+<p>&#x914D;&#x7F6E;&#x5B8C;&#x6210;&#x540E;&#xFF0C;cmd&#x8F93;&#x5165;&#x547D;&#x4EE4; <code>mysql --version</code>&#xFF0C;&#x5373;&#x53EF;&#x67E5;&#x770B;&#x662F;&#x5426;&#x914D;&#x7F6E;&#x6210;&#x529F;</p>
+<p>&#x5728;&#x8BE5;&#x6587;&#x4EF6;&#x5939;&#x4E0B;&#x521B;&#x5EFA; my.ini &#x914D;&#x7F6E;&#x6587;&#x4EF6;&#xFF0C;&#x7F16;&#x8F91; my.ini &#x914D;&#x7F6E;&#x4EE5;&#x4E0B;&#x57FA;&#x672C;&#x4FE1;&#x606F;</p>
+<pre data-role="codeBlock" data-info="ini" class="language-ini"><span class="token header"><span class="token punctuation">[</span><span class="token section-name selector">client</span><span class="token punctuation">]</span></span>
 <span class="token comment"># &#x8BBE;&#x7F6E;mysql&#x5BA2;&#x6237;&#x7AEF;&#x9ED8;&#x8BA4;&#x5B57;&#x7B26;&#x96C6;</span>
 <span class="token key attr-name">default-character-set</span><span class="token punctuation">=</span><span class="token value attr-value">utf8</span>
  
@@ -937,65 +496,76 @@
 <span class="token key attr-name">character-set-server</span><span class="token punctuation">=</span><span class="token value attr-value">utf8</span>
 <span class="token comment"># &#x521B;&#x5EFA;&#x65B0;&#x8868;&#x65F6;&#x5C06;&#x4F7F;&#x7528;&#x7684;&#x9ED8;&#x8BA4;&#x5B58;&#x50A8;&#x5F15;&#x64CE;</span>
 <span class="token key attr-name">default-storage-engine</span><span class="token punctuation">=</span><span class="token value attr-value">INNODB</span>
-</pre>
-    <p>
-      2&#x3001;&#x521D;&#x59CB;&#x5316;/&#x5B89;&#x88C5;/&#x542F;&#x52A8;/&#x4FEE;&#x6539;root&#x7528;&#x6237;&#x5BC6;&#x7801;/&#x505C;&#x6B62;
-      &#x547D;&#x4EE4;</p>
-    <p>&#x4EE5;&#x7BA1;&#x7406;&#x5458;&#x8EAB;&#x4EFD;&#x6253;&#x5F00; cmd &#x547D;&#x4EE4;&#x884C;&#x5DE5;&#x5177;</p>
-    <p>&#x521D;&#x59CB;&#x5316;&#x6570;&#x636E;&#x5E93;:<br>
-      <code>mysqld --initialize --console</code></p>
-    <p>&#x6267;&#x884C;&#x5B8C;&#x6210;&#x540E;&#xFF0C;&#x4F1A;&#x8F93;&#x51FA; root
-      &#x7528;&#x6237;&#x7684;&#x521D;&#x59CB;&#x9ED8;&#x8BA4;&#x5BC6;&#x7801;&#xFF0C;&#x540E;&#x7EED;&#x767B;&#x5F55;&#x9700;&#x8981;&#x7528;&#x5230;&#xFF0C;&#x4F60;&#x4E5F;&#x53EF;&#x4EE5;&#x5728;&#x767B;&#x9646;&#x540E;&#x4FEE;&#x6539;&#x5BC6;&#x7801;
-    </p>
-    <p>&#x8F93;&#x5165;&#x4EE5;&#x4E0B;&#x5B89;&#x88C5;&#x547D;&#x4EE4;&#xFF1A;</p>
-    <p><code>mysqld install</code><br>
-      &#x63D0;&#x793A;&#xFF1A;Service successfully installed. &#x8868;&#x793A;&#x5B89;&#x88C5;&#x6210;&#x529F;&#x3002;
-    </p>
-    <p>&#x542F;&#x52A8;&#x8F93;&#x5165;&#x4EE5;&#x4E0B;&#x547D;&#x4EE4;&#x5373;&#x53EF;&#xFF1A;</p>
-    <p><code>net start mysql</code></p>
-    <p>&#x5982;&#x679C;&#x6211;&#x4EEC;&#x8981;&#x767B;&#x5F55;&#x672C;&#x673A;&#x7684; MySQL
-      &#x6570;&#x636E;&#x5E93;&#xFF0C;&#x53EA;&#x9700;&#x8981;&#x8F93;&#x5165;&#x4EE5;&#x4E0B;&#x547D;&#x4EE4;&#x5373;&#x53EF;&#xFF1A;
-    </p>
-    <p><code>mysql -u root -p</code></p>
-    <p>MySQL &#x4FEE;&#x6539;root&#x7528;&#x6237;&#x5BC6;&#x7801;</p>
-    <p><code>set password for root@localhost=&apos;123456&apos;;</code></p>
-    <p>&#x505C;&#x6B62;&#x670D;&#x52A1;</p>
-    <p><code>net stop mysql</code></p>
-    <h4>2.2 DBeaver&#x5B89;&#x88C5;&#x4E0E;&#x4F7F;&#x7528;</h4>
-    <p>DBeaver &#x662F;&#x4E00;&#x4E2A;&#x57FA;&#x4E8E; Java
-      &#x5F00;&#x53D1;&#xFF0C;&#x514D;&#x8D39;&#x5F00;&#x6E90;&#x7684;&#x901A;&#x7528;&#x6570;&#x636E;&#x5E93;&#x7BA1;&#x7406;&#x548C;&#x5F00;&#x53D1;&#x5DE5;&#x5177;
-    </p>
-    <p><a href="https://github.com/dbeaver/dbeaver/releases">https://github.com/dbeaver/dbeaver/releases</a></p>
-    <p><a href="https://dbeaver.io/download/">https://dbeaver.io/download/</a></p>
-    <p>&#x53C2;&#x8003;&#x6587;&#x7AE0;&#xFF1A;</p>
-    <p><a
-        href="https://blog.csdn.net/weixin_48053866/article/details/125815498">dbeaver&#x5B89;&#x88C5;&#x548C;&#x4F7F;&#x7528;&#x6559;&#x7A0B;</a>
-    </p>
-    <p><a
-        href="https://www.cnblogs.com/pingcode/p/15842315.html">DBeaver&#x4E0B;&#x8F7D;&#x5B89;&#x88C5;&#x4E0E;&#x8FDE;&#x63A5;MySQL&#x6570;&#x636E;&#x5E93;</a>
-    </p>
-    <p><a href="https://www.cnblogs.com/yhanblog/p/14498457.html">Windows7&#x73AF;&#x5883;&#xFF0C;Dbeaver
-        &#x5B89;&#x88C5;&#x8FDE;&#x63A5;Mysql5.7</a></p>
-    <h4>3. maven</h4>
-    <p>maven &#x914D;&#x7F6E;&#x6307;&#x5357;</p>
-    <p><a href="https://developer.aliyun.com/mvn/guide">https://developer.aliyun.com/mvn/guide</a></p>
-    <p>maven&#x5B89;&#x88C5;&#x548C;&#x8BE6;&#x7EC6;&#x914D;&#x7F6E;</p>
-    <p><a
-        href="https://www.cnblogs.com/zzvar/articles/14596750.html">https://www.cnblogs.com/zzvar/articles/14596750.html</a>
-    </p>
+</pre><p>2&#x3001;&#x521D;&#x59CB;&#x5316;/&#x5B89;&#x88C5;/&#x542F;&#x52A8;/&#x4FEE;&#x6539;root&#x7528;&#x6237;&#x5BC6;&#x7801;/&#x505C;&#x6B62; &#x547D;&#x4EE4;</p>
+<p>&#x4EE5;&#x7BA1;&#x7406;&#x5458;&#x8EAB;&#x4EFD;&#x6253;&#x5F00; cmd &#x547D;&#x4EE4;&#x884C;&#x5DE5;&#x5177;</p>
+<p>&#x521D;&#x59CB;&#x5316;&#x6570;&#x636E;&#x5E93;:<br>
+<code>mysqld --initialize --console</code></p>
+<p>&#x6267;&#x884C;&#x5B8C;&#x6210;&#x540E;&#xFF0C;&#x4F1A;&#x8F93;&#x51FA; root &#x7528;&#x6237;&#x7684;&#x521D;&#x59CB;&#x9ED8;&#x8BA4;&#x5BC6;&#x7801;&#xFF0C;&#x540E;&#x7EED;&#x767B;&#x5F55;&#x9700;&#x8981;&#x7528;&#x5230;&#xFF0C;&#x4F60;&#x4E5F;&#x53EF;&#x4EE5;&#x5728;&#x767B;&#x9646;&#x540E;&#x4FEE;&#x6539;&#x5BC6;&#x7801;</p>
+<p>&#x8F93;&#x5165;&#x4EE5;&#x4E0B;&#x5B89;&#x88C5;&#x547D;&#x4EE4;&#xFF1A;</p>
+<p><code>mysqld install</code><br>
+&#x63D0;&#x793A;&#xFF1A;Service successfully installed. &#x8868;&#x793A;&#x5B89;&#x88C5;&#x6210;&#x529F;&#x3002;</p>
+<p>&#x542F;&#x52A8;&#x8F93;&#x5165;&#x4EE5;&#x4E0B;&#x547D;&#x4EE4;&#x5373;&#x53EF;&#xFF1A;</p>
+<p><code>net start mysql</code></p>
+<p>&#x5982;&#x679C;&#x6211;&#x4EEC;&#x8981;&#x767B;&#x5F55;&#x672C;&#x673A;&#x7684; MySQL &#x6570;&#x636E;&#x5E93;&#xFF0C;&#x53EA;&#x9700;&#x8981;&#x8F93;&#x5165;&#x4EE5;&#x4E0B;&#x547D;&#x4EE4;&#x5373;&#x53EF;&#xFF1A;</p>
+<p><code>mysql -u root -p</code></p>
+<p>MySQL &#x4FEE;&#x6539;root&#x7528;&#x6237;&#x5BC6;&#x7801;</p>
+<p><code>set password for root@localhost=&apos;123456&apos;;</code></p>
+<p>&#x505C;&#x6B62;&#x670D;&#x52A1;</p>
+<p><code>net stop mysql</code></p>
+<h4>DBeaver&#x5B89;&#x88C5;&#x4E0E;&#x4F7F;&#x7528;</h4>
+<p>DBeaver &#x662F;&#x4E00;&#x4E2A;&#x57FA;&#x4E8E; Java &#x5F00;&#x53D1;&#xFF0C;&#x514D;&#x8D39;&#x5F00;&#x6E90;&#x7684;&#x901A;&#x7528;&#x6570;&#x636E;&#x5E93;&#x7BA1;&#x7406;&#x548C;&#x5F00;&#x53D1;&#x5DE5;&#x5177;<br>
+<a href="https://github.com/dbeaver/dbeaver/releases">https://github.com/dbeaver/dbeaver/releases</a></p>
+<p><a href="https://dbeaver.io/download/">https://dbeaver.io/download/</a></p>
+<p>&#x53C2;&#x8003;&#x6587;&#x7AE0;&#xFF1A;</p>
+<p><a href="https://blog.csdn.net/weixin_48053866/article/details/125815498">dbeaver&#x5B89;&#x88C5;&#x548C;&#x4F7F;&#x7528;&#x6559;&#x7A0B;</a></p>
+<p><a href="https://www.cnblogs.com/pingcode/p/15842315.html">DBeaver&#x4E0B;&#x8F7D;&#x5B89;&#x88C5;&#x4E0E;&#x8FDE;&#x63A5;MySQL&#x6570;&#x636E;&#x5E93;</a></p>
+<p><a href="https://www.cnblogs.com/yhanblog/p/14498457.html">Windows7&#x73AF;&#x5883;&#xFF0C;Dbeaver &#x5B89;&#x88C5;&#x8FDE;&#x63A5;Mysql5.7</a></p>
+<h3>maven</h3>
+<p><a href="https://mvnrepository.com/">https://mvnrepository.com/</a></p>
+<p><a href="https://developer.aliyun.com/mvn/search">https://developer.aliyun.com/mvn/search</a></p>
+<p>maven &#x914D;&#x7F6E;&#x6307;&#x5357; <a href="https://developer.aliyun.com/mvn/guide">https://developer.aliyun.com/mvn/guide</a></p>
+<p>maven&#x4E0B;&#x8F7D;&#x7684;&#x5B98;&#x7F51;&#x5730;&#x5740; <a href="https://maven.apache.org/download.cgi">https://maven.apache.org/download.cgi</a></p>
+<p>maven&#x5B89;&#x88C5;&#x548C;&#x8BE6;&#x7EC6;&#x914D;&#x7F6E; <a href="https://www.cnblogs.com/zzvar/articles/14596750.html">https://www.cnblogs.com/zzvar/articles/14596750.html</a></p>
+<p>&#x6A21;&#x5757;&#x7BA1;&#x7406; - &#x5ED6;&#x96EA;&#x5CF0;&#x7684;&#x5B98;&#x65B9;&#x7F51;&#x7AD9; <a href="https://www.liaoxuefeng.com/wiki/1252599548343744/1309301243117601">https://www.liaoxuefeng.com/wiki/1252599548343744/1309301243117601</a></p>
+<ul>
+<li>maven&#x73AF;&#x5883;&#x53D8;&#x91CF;&#x914D;&#x7F6E;</li>
+</ul>
+<p>&#x5148;&#x70B9;&#x51FB;&#x65B0;&#x5EFA;&#x7CFB;&#x7EDF;&#x53D8;&#x91CF;&#xFF0C;&#x53D8;&#x91CF;&#x540D;&#x4E3A;<code>MAVEN_HOME</code> &#x53D8;&#x91CF;&#x503C;&#x4E3A;maven&#x7684;&#x89E3;&#x538B;&#x8DEF;&#x5F84;&#xFF0C;&#x627E;&#x5230;path&#x2014;&#x2014;&#x7F16;&#x8F91;path&#x53D8;&#x91CF;&#x2014;&#x2014;&#x5728;&#x5F39;&#x51FA;&#x7684;&#x6846;&#x4E2D;&#x70B9;&#x51FB;&#x65B0;&#x5EFA;&#x2014;&#x2014; <code>%MAVEN_HOME%\bin</code>&#x2014;&#x2014;&#x786E;&#x5B9A;&#x3002;<br>
+&#x68C0;&#x9A8C;maven&#x7684;&#x914D;&#x7F6E;&#x60C5;&#x51B5;&#xFF1A;&#x70B9;&#x51FB;&#x5F00;&#x59CB;(&#x6216;win10&#x684C;&#x9762;&#x5DE6;&#x4E0B;&#x811A;&#x4EFB;&#x52A1;&#x680F;&#x7684;&#x641C;&#x7D22;&#x6846;&#x6216;&#x8005;&#x76F4;&#x63A5;win+R)&#x2014;&#x2014;&#x5728;&#x641C;&#x7D22;&#x6846;&#x4E2D;&#x8F93;&#x5165;cmd&#x2014;&#x2014;&#x56DE;&#x8F66;<br>
+&#x8F93;&#x5165;<code>mvn -version</code>&#x3002;</p>
+<ul>
+<li>&#x914D;&#x7F6E;maven&#x672C;&#x5730;&#x4ED3;&#x5E93;</li>
+</ul>
+<p>maven&#x672C;&#x5730;&#x4ED3;&#x5E93;&#x4E5F;&#x53EF;&#x4EE5;&#x4E0D;&#x914D;&#x7F6E;&#xFF0C;&#x5982;&#x679C;&#x4E0D;&#x914D;&#x7F6E;&#xFF0C;&#x9ED8;&#x8BA4;&#x672C;&#x5730;&#x4ED3;&#x5E93;&#x5730;&#x5740;&#x4E3A;C:\Users\Administrator.m2\repository&#x3002;&#x628A;<code>&lt;localRepository&gt;&lt;/localRepository&gt;</code>&#x4E2D;&#x95F4;&#x7684;&#x8DEF;&#x5F84;&#x4FEE;&#x6539;&#x6210;&#x4F60;&#x81EA;&#x5DF1;&#x521B;&#x5EFA;&#x7684;&#x672C;&#x5730;&#x4ED3;&#x5E93;&#x8DEF;&#x5F84;&#x5C31;&#x597D;&#x4E86;<code>&lt;localRepository&gt;/path/to/local/repo&lt;/localRepository&gt;</code>&#x3002;</p>
+<ul>
+<li>&#x914D;&#x7F6E;maven&#x963F;&#x91CC;&#x4E91;&#x955C;&#x50CF;</li>
+</ul>
+<p>&#x63A5;&#x4E0B;&#x6765;&#x6211;&#x4EEC;&#x9700;&#x8981;&#x914D;&#x7F6E;maven&#x955C;&#x50CF;&#xFF0C;&#x5982;&#x679C;&#x6211;&#x4EEC;&#x4E0D;&#x914D;&#x7F6E;&#xFF0C;&#x6211;&#x4EEC;&#x4E0B;&#x8F7D;jar&#x5305;&#x662F;&#x4ECE;&#x56FD;&#x5916;&#x4E0B;&#x8F7D;&#x7684;&#xFF0C;&#x4E0B;&#x8F7D;&#x901F;&#x5EA6;&#x5F88;&#x6162;&#xFF0C;&#x6240;&#x4EE5;&#x6211;&#x4EEC;&#x914D;&#x7F6E;&#x4E00;&#x4E0B;&#x56FD;&#x5185;&#x7684;&#x963F;&#x91CC;&#x4E91;&#x955C;&#x50CF;&#x3002;&#x914D;&#x7F6E;&#x65B9;&#x6CD5;&#xFF1A;&#x627E;&#x5230;&#x672A;&#x5728;&#x6CE8;&#x91CA;&#x6807;&#x7B7E;&#x5185;&#x7684;mirrors&#xFF0C;&#x63A5;&#x7740;&#x6211;&#x4EEC;&#x5F80;mirrors&#x6807;&#x7B7E;&#x5185;&#x6DFB;&#x52A0;&#x963F;&#x91CC;&#x4E91;&#x955C;&#x50CF;&#xFF0C;&#x7136;&#x540E;&#x4FDD;&#x5B58;&#x3002;</p>
+<p>mvn clean package&#x53EA;&#x5C06;&#x9879;&#x76EE;&#x6253;&#x5305;&#x6210;&#x53EF;&#x6267;&#x884C;&#x6587;&#x4EF6;&#xFF0C;&#x4E0D;&#x5B89;&#x88C5;&#x5230;&#x672C;&#x5730;&#x4ED3;&#x5E93;&#xFF1B;&#x800C;mvn clean install&#x5219;&#x5C06;&#x6253;&#x5305;&#x597D;&#x7684;&#x6587;&#x4EF6;&#x5B89;&#x88C5;&#x5230;&#x672C;&#x5730;&#x4ED3;&#x5E93;&#xFF0C;&#x4EE5;&#x4FBF;&#x5176;&#x4ED6;&#x9879;&#x76EE;&#x5F15;&#x7528;&#x3002;<br>
+mvn clean install&#x4F1A;&#x6267;&#x884C;&#x4E00;&#x4E9B;&#x989D;&#x5916;&#x7684;&#x64CD;&#x4F5C;&#xFF0C;&#x5982;&#x751F;&#x6210;&#x7AD9;&#x70B9;&#x6587;&#x6863;&#x3001;&#x6267;&#x884C;&#x96C6;&#x6210;&#x6D4B;&#x8BD5;&#x7B49;&#xFF0C;&#x800C;mvn clean package&#x5219;&#x4E0D;&#x4F1A;&#x3002;</p>
+<p>&#x56E0;&#x6B64;&#xFF0C;&#x5728;&#x5B9E;&#x9645;&#x5E94;&#x7528;&#x4E2D;&#xFF0C;&#x5982;&#x679C;&#x4F60;&#x53EA;&#x9700;&#x8981;&#x5C06;&#x9879;&#x76EE;&#x6253;&#x5305;&#x6210;&#x53EF;&#x6267;&#x884C;&#x6587;&#x4EF6;&#xFF0C;&#x800C;&#x4E0D;&#x9700;&#x8981;&#x5B89;&#x88C5;&#x5230;&#x672C;&#x5730;&#x4ED3;&#x5E93;&#x6216;&#x6267;&#x884C;&#x5176;&#x4ED6;&#x989D;&#x5916;&#x64CD;&#x4F5C;&#xFF0C;&#x90A3;&#x4E48;&#x53EF;&#x4EE5;&#x4F7F;&#x7528;mvn clean package&#x547D;&#x4EE4;&#x3002;&#x5982;&#x679C;&#x4F60;&#x5E0C;&#x671B;&#x5C06;&#x6253;&#x5305;&#x597D;&#x7684;&#x6587;&#x4EF6;&#x5B89;&#x88C5;&#x5230;&#x672C;&#x5730;&#x4ED3;&#x5E93;&#xFF0C;&#x4EE5;&#x4FBF;&#x5176;&#x4ED6;&#x9879;&#x76EE;&#x5F15;&#x7528;&#xFF0C;&#x6216;&#x8005;&#x9700;&#x8981;&#x6267;&#x884C;&#x5176;&#x4ED6;&#x989D;&#x5916;&#x64CD;&#x4F5C;&#xFF0C;&#x90A3;&#x4E48;&#x5E94;&#x8BE5;&#x4F7F;&#x7528;mvn clean install&#x547D;&#x4EE4;&#x3002;</p>
+<p>&#x9700;&#x8981;&#x6CE8;&#x610F;&#x7684;&#x662F;&#xFF0C;&#x5728;&#x6267;&#x884C;&#x8FD9;&#x4E24;&#x4E2A;&#x547D;&#x4EE4;&#x4E4B;&#x524D;&#xFF0C;&#x4F60;&#x5E94;&#x8BE5;&#x5148;&#x4F7F;&#x7528;mvn clean&#x547D;&#x4EE4;&#x6E05;&#x7406;&#x4E0A;&#x4E00;&#x6B21;&#x6784;&#x5EFA;&#x751F;&#x6210;&#x7684;&#x6587;&#x4EF6;&#xFF0C;&#x4EE5;&#x786E;&#x4FDD;&#x672C;&#x6B21;&#x6784;&#x5EFA;&#x7684;&#x51C6;&#x786E;&#x6027;&#x3002;&#x6B64;&#x5916;&#xFF0C;&#x7531;&#x4E8E;&#x8FD9;&#x4E24;&#x4E2A;&#x547D;&#x4EE4;&#x90FD;&#x4F1A;&#x6267;&#x884C;&#x7F16;&#x8BD1;&#x548C;&#x6D4B;&#x8BD5;&#x9636;&#x6BB5;&#xFF0C;&#x56E0;&#x6B64;&#x5728;&#x6267;&#x884C;&#x4E4B;&#x524D;&#x4F60;&#x9700;&#x8981;&#x786E;&#x4FDD;&#x9879;&#x76EE;&#x7684;&#x6E90;&#x4EE3;&#x7801;&#x548C;&#x6D4B;&#x8BD5;&#x4EE3;&#x7801;&#x90FD;&#x5DF2;&#x7ECF;&#x7F16;&#x5199;&#x5B8C;&#x6BD5;&#x5E76;&#x4E14;&#x6CA1;&#x6709;&#x9519;&#x8BEF;&#x3002;</p>
+<h4>maven&#x7684;&#x591A;&#x6A21;&#x5757;&#x9879;&#x76EE;</h4>
+<p>&#x5728; Maven &#x7684;&#x591A;&#x6A21;&#x5757;&#x9879;&#x76EE;&#x4E2D;&#xFF0C;&#x6BCF;&#x4E2A;&#x6A21;&#x5757;&#x901A;&#x5E38;&#x90FD;&#x662F;&#x4E00;&#x4E2A;&#x72EC;&#x7ACB;&#x7684; Maven &#x9879;&#x76EE;&#xFF0C;&#x5B83;&#x4EEC;&#x4E4B;&#x95F4;&#x901A;&#x8FC7;&#x7EE7;&#x627F;&#x548C;&#x805A;&#x5408;&#xFF08;&#x4E5F;&#x79F0;&#x4E3A;&#x591A;&#x6A21;&#x5757;&#x6784;&#x5EFA;&#xFF09;&#x6765;&#x7EC4;&#x7EC7;&#x3002;&#x5728;&#x591A;&#x6A21;&#x5757;&#x9879;&#x76EE;&#x4E2D;&#xFF0C;&#x901A;&#x5E38;&#x4F1A;&#x6709;&#x4E00;&#x4E2A;&#x7236; POM&#xFF08;pom.xml &#x6587;&#x4EF6;&#xFF09;&#xFF0C;&#x8BE5;&#x6587;&#x4EF6;&#x5B9A;&#x4E49;&#x4E86;&#x6240;&#x6709;&#x5B50;&#x6A21;&#x5757;&#x7684;&#x516C;&#x5171;&#x914D;&#x7F6E;&#xFF0C;&#x4EE5;&#x53CA;&#x54EA;&#x4E9B;&#x6A21;&#x5757;&#x662F;&#x9879;&#x76EE;&#x7684;&#x4E00;&#x90E8;&#x5206;&#x3002;<br>
+Maven &#x547D;&#x4EE4;</p>
+<ol>
+<li>&#x6784;&#x5EFA;&#x6574;&#x4E2A;&#x591A;&#x6A21;&#x5757;&#x9879;&#x76EE;</li>
+</ol>
+<p>&#x4F60;&#x53EF;&#x4EE5;&#x4F7F;&#x7528; mvn clean install &#x547D;&#x4EE4;&#x6765;&#x6784;&#x5EFA;&#x6574;&#x4E2A;&#x591A;&#x6A21;&#x5757;&#x9879;&#x76EE;&#x3002;&#x8FD9;&#x4E2A;&#x547D;&#x4EE4;&#x4F1A;&#x9996;&#x5148;&#x6E05;&#x7406;&#x4E4B;&#x524D;&#x7684;&#x6784;&#x5EFA;&#x7ED3;&#x679C;&#xFF08;clean&#xFF09;&#xFF0C;&#x7136;&#x540E;&#x7F16;&#x8BD1;&#x3001;&#x6D4B;&#x8BD5;&#x548C;&#x6253;&#x5305;&#x6240;&#x6709;&#x7684;&#x5B50;&#x6A21;&#x5757;&#xFF08;install&#xFF09;&#x3002;<br>
+<code>mvn clean install</code><br>
+&#x6CE8;&#x610F;&#xFF1A;install &#x547D;&#x4EE4;&#x4F1A;&#x5C06;&#x6BCF;&#x4E2A;&#x5B50;&#x6A21;&#x5757;&#x7684; JAR &#x6216; WAR &#x5B89;&#x88C5;&#x5230;&#x672C;&#x5730; Maven &#x4ED3;&#x5E93;&#x4E2D;&#xFF0C;&#x4EE5;&#x4FBF;&#x5176;&#x4ED6;&#x9879;&#x76EE;&#x53EF;&#x4EE5;&#x4F7F;&#x7528;&#x8FD9;&#x4E9B;&#x6A21;&#x5757;&#x4F5C;&#x4E3A;&#x4F9D;&#x8D56;&#x9879;&#x3002;<br>
+2. &#x6784;&#x5EFA;&#x7279;&#x5B9A;&#x7684;&#x5B50;&#x6A21;&#x5757;</p>
+<p>&#x5982;&#x679C;&#x4F60;&#x53EA;&#x60F3;&#x6784;&#x5EFA;&#x591A;&#x6A21;&#x5757;&#x9879;&#x76EE;&#x4E2D;&#x7684;&#x67D0;&#x4E2A;&#x5B50;&#x6A21;&#x5757;&#xFF0C;&#x4F60;&#x53EF;&#x4EE5;&#x4F7F;&#x7528; <code>-pl</code> &#x53C2;&#x6570;&#x6765;&#x6307;&#x5B9A;&#x8981;&#x6784;&#x5EFA;&#x7684;&#x6A21;&#x5757;&#x3002;&#x4F8B;&#x5982;&#xFF0C;&#x5982;&#x679C;&#x4F60;&#x7684;&#x9879;&#x76EE;&#x4E2D;&#x6709; module-a &#x548C; module-b &#x4E24;&#x4E2A;&#x5B50;&#x6A21;&#x5757;&#xFF0C;&#x4F46;&#x4F60;&#x53EA;&#x60F3;&#x6784;&#x5EFA; module-a&#xFF0C;&#x4F60;&#x53EF;&#x4EE5;&#x8FD9;&#x6837;&#x505A;&#xFF1A;<br>
+<code>mvn clean install -pl module-a</code><br>
+3. &#x8FD0;&#x884C;&#x7279;&#x5B9A;&#x7684; Maven &#x63D2;&#x4EF6;&#x6216;&#x76EE;&#x6807;</p>
+<p>Maven &#x5141;&#x8BB8;&#x4F60;&#x8FD0;&#x884C;&#x7279;&#x5B9A;&#x7684;&#x63D2;&#x4EF6;&#x6216;&#x76EE;&#x6807;&#x3002;&#x4F8B;&#x5982;&#xFF0C;&#x5982;&#x679C;&#x4F60;&#x60F3;&#x5728; module-a &#x4E0A;&#x8FD0;&#x884C; test &#x76EE;&#x6807;&#xFF0C;&#x4F60;&#x53EF;&#x4EE5;&#x8FD9;&#x6837;&#x505A;&#xFF1A;<br>
+<code>mvn test -pl module-a</code><br>
+&#x6216;&#x8005;&#xFF0C;&#x5982;&#x679C;&#x4F60;&#x60F3;&#x5728; module-a &#x4E0A;&#x8FD0;&#x884C; spring-boot:run &#x63D2;&#x4EF6;&#xFF08;&#x5047;&#x8BBE;&#x4F60;&#x6B63;&#x5728;&#x4F7F;&#x7528; Spring Boot&#xFF09;&#xFF0C;&#x4F60;&#x53EF;&#x4EE5;&#x8FD9;&#x6837;&#x505A;&#xFF1A;<br>
+<code>mvn spring-boot:run -pl module-a</code><br>
+&#x6CE8;&#x610F;&#x4E8B;&#x9879;<br>
+&#x786E;&#x4FDD;&#x4F60;&#x7684;&#x7236; POM &#x6587;&#x4EF6;&#x4E2D;&#x7684; <modules> &#x6807;&#x7B7E;&#x5305;&#x542B;&#x4E86;&#x6240;&#x6709;&#x5B50;&#x6A21;&#x5757;&#x7684;&#x540D;&#x79F0;&#x3002;<br>
+&#x5F53;&#x4F60;&#x5728;&#x7236; POM &#x76EE;&#x5F55;&#x4E0B;&#x8FD0;&#x884C; Maven &#x547D;&#x4EE4;&#x65F6;&#xFF0C;Maven &#x4F1A;&#x81EA;&#x52A8;&#x627E;&#x5230;&#x5E76;&#x5904;&#x7406;&#x6240;&#x6709;&#x5B50;&#x6A21;&#x5757;&#x3002;<br>
+&#x5982;&#x679C;&#x4F60;&#x5728;&#x5B50;&#x6A21;&#x5757;&#x7684;&#x76EE;&#x5F55;&#x4E0B;&#x8FD0;&#x884C; Maven &#x547D;&#x4EE4;&#xFF0C;Maven &#x53EA;&#x4F1A;&#x5904;&#x7406;&#x90A3;&#x4E2A;&#x5B50;&#x6A21;&#x5757;&#xFF0C;&#x9664;&#x975E;&#x4F60;&#x5728;&#x547D;&#x4EE4;&#x4E2D;&#x6307;&#x5B9A;&#x4E86;&#x5176;&#x4ED6;&#x6A21;&#x5757;&#x3002;</modules></p>
 
-  </div>
-
-
-
-
-
-
-
-
-
-
-
-</body>
-
-</html>
+      </div>
+    </body></html>
