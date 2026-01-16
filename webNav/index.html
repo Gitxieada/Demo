@@ -1,0 +1,487 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>gitxieada 简易收藏夹</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      height: 100vh;
+      overflow-y: auto;
+      /* background-color: #f8f8f8; */
+      background-attachment: fixed;
+    }
+
+    body::-webkit-scrollbar {
+      display: none;
+    }
+
+    .header,
+    .container,
+    .footer {
+      max-width: 1300px;
+    }
+
+    .header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      width: 100%;
+    }
+
+    .header h1 {
+      font-size: 2.5em;
+      margin: 20px 0px 0px 20px;
+    }
+
+    .header p {
+      font-size: 1.2em;
+      color: #666;
+      margin: 20px;
+      margin: 0px 0px 0px 20px;
+      font-size: 15px;
+    }
+
+    .container {
+      width: 100%;
+      display: grid;
+      gap: 20px;
+      padding: 20px;
+      box-sizing: border-box;
+    }
+
+    .project {
+      background-color: rgba(249, 250, 251);
+      border: 1px solid #e0e0e0;
+      border-radius: 8px;
+      padding: 10px;
+      display: flex;
+      align-items: center;
+      text-decoration: none;
+      color: inherit;
+      position: relative;
+    }
+
+    .project:hover {
+      background-color: rgb(229, 231, 235);
+    }
+
+    .project img {
+      width: 40px;
+      height: auto;
+      margin-right: 15px;
+      border-radius: 20%;
+    }
+
+    .project h3 {
+      margin: 0;
+      font-size: 1.2em;
+      color: #333;
+    }
+
+    .project p {
+      margin: 0;
+      color: #777;
+      font-size: 12px;
+    }
+
+    .corner-links {
+      display: flex;
+      align-items: center;
+      padding: 20px;
+    }
+
+    .corner-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 10px;
+      border-radius: 8px;
+      color: #212529;
+      text-decoration: none;
+      transition: all 0.3s ease;
+    }
+
+    .corner-link:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+    }
+
+    .corner-link .label {
+      font-weight: 600;
+      font-size: 0.95rem;
+    }
+
+    .project .wenzhang-btn:hover {
+      filter: brightness(0) saturate(100%) invert(15%) sepia(89%) saturate(694%) hue-rotate(162deg) brightness(97%) contrast(97%);
+    }
+
+    .container .footer {
+      text-align: center;
+      margin-top: 40px;
+      font-size: 0.9em;
+      color: #999;
+      margin-top: auto;
+      text-align: right;
+      width: 100%;
+    }
+
+    .container .footer a {
+      text-decoration: none;
+      color: rgba(217, 115, 13, 1);
+      font-weight: bolder;
+    }
+
+    .container :focus {
+      outline: 0;
+      border-color: #2260ff;
+      box-shadow: 0 0 0 4px #b5c9fc;
+    }
+
+    .mydict div {
+      display: flex;
+      flex-wrap: wrap;
+      margin-top: 0.5rem;
+      justify-content: center;
+    }
+
+    .mydict input[type="radio"] {
+      clip: rect(0 0 0 0);
+      clip-path: inset(100%);
+      height: 1px;
+      overflow: hidden;
+      position: absolute;
+      white-space: nowrap;
+      width: 1px;
+    }
+
+    .mydict input[type="radio"]:checked+span {
+      box-shadow: 0 0 0 0.0625em #0043ed;
+      background-color: #dee7ff;
+      z-index: 1;
+      color: #0043ed;
+    }
+
+    label span {
+      display: block;
+      cursor: pointer;
+      background-color: #fff;
+      padding: 0.375em 0.75em;
+      position: relative;
+      margin-left: 0.0625em;
+      box-shadow: 0 0 0 0.0625em #b5bfd9;
+      letter-spacing: 0.05em;
+      color: #3e4963;
+      text-align: center;
+      transition: background-color 0.5s ease;
+    }
+
+    label:first-child span {
+      border-radius: 0.375em 0 0 0.375em;
+    }
+
+    label:last-child span {
+      border-radius: 0 0.375em 0.375em 0;
+    }
+
+    #project-container a:focus,
+    #project-container .wenzhang-btn:focus,
+    #project-container button:focus,
+    #project-container input:focus,
+    #project-container textarea:focus {
+      outline: none;
+      box-shadow: none;
+    }
+
+    a:focus-visible,
+    .wenzhang-btn:focus-visible {
+      outline: 2px solid #0043ed;
+      box-shadow: 0 0 0 2px rgba(0, 67, 237, 0.2);
+    }
+
+    @media (min-width: 640px) {
+      .container {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    @media (min-width: 1000px) {
+      .container {
+        grid-template-columns: repeat(4, 1fr);
+      }
+    }
+
+    @media (max-width: 1330px) {
+      .footer {
+        padding: 0px 20px 0px 0px;
+        box-sizing: border-box;
+      }
+    }
+
+    @media (max-width: 400px) {
+      label span {
+        padding: 0.355em 0.4em;
+      }
+    }
+
+    code {
+      word-wrap: break-word;
+      white-space: pre-wrap;
+      word-break: break-all;
+      max-width: 100%;
+      overflow-wrap: break-word;
+    }
+
+    li {
+      word-wrap: break-word;
+    }
+
+    /* corner-links 内联搜索样式（点击放大镜再展开） */
+    .corner-links {
+      display: flex;
+      align-items: center;
+      padding: 20px;
+    }
+
+    .corner-links .search-toggle {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 28px;
+      height: 28px;
+      padding: 0;
+      margin-right: 8px;
+      border: 0;
+      background: transparent;
+      cursor: pointer;
+      transition: opacity 0.2s ease;
+    }
+
+    .corner-links .search-toggle:hover {
+      opacity: 0.8;
+    }
+
+    .corner-links .search-input {
+      width: 0;
+      max-width: 35vw;
+      opacity: 0;
+      border: 0;
+      padding: 8px 10px;
+      border-radius: 8px;
+      outline: none;
+      background: #fff;
+      transition: width 0.25s ease, opacity 0.2s ease, border-color 0.2s ease,
+        box-shadow 0.2s ease;
+    }
+
+    .corner-links.search-open .search-input {
+      width: 220px;
+      min-width: 140px;
+      opacity: 1;
+      border: 1px solid #b5bfd9;
+    }
+
+    /* 展开时隐藏放大镜按钮 */
+    .corner-links.search-open .search-toggle {
+      display: none;
+    }
+
+    .corner-links .search-input:focus {
+      border-color: #2260ff;
+      box-shadow: 0 0 0 4px #b5c9fc;
+    }
+
+    @media screen and (max-width: 640px) {
+      .corner-links {
+        position: relative;
+      }
+
+      .corner-links.search-open .search-input {
+        position: absolute;
+        right: 20px;
+        top: 50%;
+        transform: translateY(-50%);
+        width: 65vw;
+        max-width: 65vw;
+        opacity: 1;
+        border: 1px solid #b5bfd9;
+        box-shadow: 0 6px 16px rgba(0, 0, 0, 0.12);
+        z-index: 10;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="header">
+    <div class="header-left">
+      <p>简易收藏夹</p>
+    </div>
+    <div class="corner-links" aria-label="页面固定链接">
+      <button id="search-toggle" class="search-toggle" type="button" aria-label="打开搜索">
+        <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" focusable="false"
+          xmlns="http://www.w3.org/2000/svg">
+          <path fill="#212529"
+            d="M15.5 14h-.79l-.28-.27a6.471 6.471 0 0 0 1.57-4.23A6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l4.25 4.25c.41.41 1.08.41 1.49 0 .41-.41.41-1.08 0-1.49L15.5 14Zm-6 0A4.5 4.5 0 1 1 14 9.5 4.505 4.505 0 0 1 9.5 14Z" />
+        </svg>
+      </button>
+      <input id="search-input" class="search-input" type="search" placeholder="搜索全部项目..." aria-label="搜索全部项目" />
+      <a class="corner-link" href="https://gitxieada.github.io/" target="_blank" rel="noopener noreferrer"
+        aria-label="前往Gitxie的博客">
+        <span class="label">Gitxie的博客</span>
+      </a>
+    </div>
+  </div>
+
+  <div class="mydict" id="category-container">
+    <!-- 类别内容将通过JavaScript插入 -->
+  </div>
+
+  <div class="container" id="project-container">
+    <!-- 项目内容将通过JavaScript插入 -->
+  </div>
+
+  <script>
+
+    const navConfigUrl = "./data.json";
+  </script>
+  <script>
+    // 代码来自于 https://github.com/IIIStudio/IIINavbar ，本人在此基础上作了修改。
+    // 修改data.json文件，添加或删除收藏地址
+    let projects = {}; // 初始化为空对象
+    let iconConfig = {};
+    let currentCategory = "";
+    let currentSearchQuery = "";
+
+    fetch(navConfigUrl)
+      .then((response) => response.json())
+      .then((data) => {
+        projects = data; // 项目数据
+        // 动态创建类别选择
+        createCategoryOptions(Object.keys(projects));
+        // 默认加载第一个类别的项目
+        currentCategory = Object.keys(projects)[0];
+        loadProjects(currentCategory);
+      })
+      .catch((error) => console.error("获取JSON时出错:", error));
+
+    function createCategoryOptions(categories) {
+      const container = document.getElementById("category-container");
+      const categoryDiv = document.createElement("div");
+      categories.forEach((category, index) => {
+        const label = document.createElement("label");
+        label.innerHTML = `  
+            <input type="radio" name="radio" value="${category}" ${
+          index === 0 ? "checked" : ""
+          }>
+            <span>${category.charAt(0).toUpperCase() + category.slice(1)}</span>
+        `;
+        categoryDiv.appendChild(label);
+      });
+      container.appendChild(categoryDiv);
+
+      // 添加事件监听器以根据选择的类别加载项目
+      document.querySelectorAll('input[name="radio"]').forEach((radio) => {
+        radio.addEventListener("change", () => {
+          currentCategory = radio.value;
+          loadProjects(currentCategory);
+        });
+      });
+    }
+
+    function loadProjects(category) {
+      const container = document.getElementById("project-container");
+      container.innerHTML = ""; // 清空现有内容
+      currentCategory = category;
+      const selectedProjects = projects[category];
+      const q = (currentSearchQuery || "").toLowerCase();
+      let list = selectedProjects;
+      if (q) {
+        const all = Object.values(projects).reduce(
+          (acc, arr) => acc.concat(arr),
+          []
+        );
+        list = all.filter(
+          (p) =>
+            (p.name && p.name.toLowerCase().includes(q)) ||
+            (p.description && p.description.toLowerCase().includes(q))
+        );
+      }
+
+      list.forEach((project) => {
+        const projectLink = document.createElement("a");
+        projectLink.href = project.href;
+        projectLink.className = "project";
+        projectLink.target = "_blank";
+
+        let projectContent = `
+            <div>
+                <h3>${project.name}</h3>
+                <p>${project.description}</p>
+            </div> 
+        `;
+
+        projectLink.innerHTML = projectContent;
+        container.appendChild(projectLink);
+      });
+    }
+
+    document.addEventListener("DOMContentLoaded", function () {
+      // 绑定搜索事件（点击放大镜展开，输入进行“全分类”搜索）
+      const cornerLinks = document.querySelector(".corner-links");
+      const searchInput = document.getElementById("search-input");
+      const toggleBtn = document.getElementById("search-toggle");
+
+      function openSearch() {
+        if (!cornerLinks.classList.contains("search-open")) {
+          cornerLinks.classList.add("search-open");
+          setTimeout(() => searchInput.focus(), 0);
+        }
+      }
+      function closeSearch() {
+        cornerLinks.classList.remove("search-open");
+      }
+
+      if (toggleBtn && cornerLinks && searchInput) {
+        // 点击放大镜展开，展开后图标通过 CSS 隐藏
+        toggleBtn.addEventListener("click", openSearch);
+
+        // 输入即搜索（全分类）
+        searchInput.addEventListener("input", (e) => {
+          currentSearchQuery = e.target.value.trim().toLowerCase();
+          loadProjects(
+            currentCategory || (projects && Object.keys(projects)[0])
+          );
+        });
+
+        // ESC 收起
+        searchInput.addEventListener("keydown", (e) => {
+          if (e.key === "Escape") {
+            searchInput.blur(); // 触发 blur 的收起逻辑
+          }
+        });
+
+        // 失焦收起
+        searchInput.addEventListener("blur", () => {
+          closeSearch();
+        });
+
+        // 全局点击输入框外收起
+        document.addEventListener("pointerdown", (e) => {
+          if (!cornerLinks.contains(e.target)) {
+            closeSearch();
+          }
+        });
+      }
+    });
+  </script>
+</body>
+
+</html>

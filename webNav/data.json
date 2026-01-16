@@ -1,0 +1,249 @@
+{
+  "HTML": [
+    {
+      "name": "Gitxie的博客",
+      "href": "https://gitxieada.github.io/",
+      "description": "个人博客，包含项目展示，读书笔记等"
+    },
+    {
+      "href": "https://github.com/Gitxieada/OnlineNotes",
+      "name": "OnlineNotes",
+      "description": "在线笔记提供免费、安全的在线记事本，跨设备数据同步。支持以TXT格式导出。可部署于手机、电脑，文本信息在本地json中，数据安全。"
+    },
+    {
+      "href": "https://github.com/Gitxieada/easychuan",
+      "name": "easychuan",
+      "description": "在局域网内互传纯文本和文件的云剪贴板，即开即用的网页版。"
+    },
+    {
+      "name": "工具箱",
+      "href": "https://gitxieada.github.io/Demo/tools-box",
+      "description": "书签等自用工具集合"
+    },
+    {
+      "name": "npmjs",
+      "href": "https://www.npmjs.com/",
+      "description": "Node.js默认的软件包管理工具"
+    },
+    {
+      "name": "jsdelivr",
+      "href": "https://www.jsdelivr.com/",
+      "description": "开源项目的免费CDN"
+    },
+    {
+      "name": "SRI哈希生成器",
+      "href": "https://srihash.org/",
+      "description": "通过使用SRI哈希，可以验证CDN等外部资源的完整性。"
+    },
+    {
+      "name": "清华大学开源软件镜像站",
+      "href": "https://mirrors.tuna.tsinghua.edu.cn/",
+      "description": "清华大学开源软件镜像站，致力于为国内和校内用户提供高质量的开源软件镜像、Linux 镜像源服务，帮助用户更方便地获取开源软件。"
+    },
+    {
+      "name": "阿里巴巴开源镜像站",
+      "href": "https://developer.aliyun.com/mirror/",
+      "description": "阿里巴巴开源镜像站，免费提供Linux镜像下载服务，拥有多种开源软件镜像源，此外还提供域名解析DNS、网络授时NTP等服务，致力于为互联网用户提供全面，高效和稳定的基础服务。"
+    },
+    {
+      "name": "华为开源镜像站_软件开发服务_华为云",
+      "href": "https://mirrors.huaweicloud.com/home",
+      "description": "华为云DevCloud团队提供的全类型镜像站服务，提供主流开发语言组件、操作系统、常用工具和库等镜像"
+    },
+    {
+      "name": "清华大学开源软件镜像站",
+      "href": "https://mirrors.tuna.tsinghua.edu.cn/",
+      "description": "清华大学开源软件镜像站，致力于为国内和校内用户提供高质量的开源软件镜像、Linux 镜像源服务，帮助用户更方便地获取开源软件。"
+    }
+  ],
+  "Watch": [
+    {
+      "href": "https://www.4kvm.tv/",
+      "name": "4k影视",
+      "description": "电影与剧。"
+    },
+    {
+      "href": "https://www.hainatv.net/",
+      "name": "海纳TV",
+      "description": "电影与剧。"
+    },
+    {
+      "href": "https://gitxieada.github.io/Demo/tv/tvChannelNav.html",
+      "name": "直播频道导航",
+      "description": "跳转直播页（央视网等官方页面）/支持收藏频道。"
+    },
+    {
+      "href": "https://z-library.sk",
+      "name": "z-library",
+      "description": "书下载。",
+      "tg": "https://t.me/Mytzlibrarybot"
+    },
+    {
+      "href": "https://zh.annas-archive.org/",
+      "name": "安娜的档案",
+      "description": "开放的图书馆。"
+    },
+    {
+      "href": "https://weread.qq.com/",
+      "name": "微信读书",
+      "description": "多设备同步实现跨屏阅读。"
+    }
+  ],
+  "Tools": [
+    {
+      "name": "VirusTotal",
+      "href": "https://www.virustotal.com/gui/home/upload",
+      "description": "谷歌旗下运营的知名多引擎扫描平台，专注于提供文件、URL、域名及 IP 地址的恶意软件检测服务。"
+    },
+    {
+      "name": "奇安信情报沙箱",
+      "href": "https://sandbox.ti.qianxin.com/sandbox/page",
+      "description": "奇安信情报沙箱提供多种文件格式的深度分析，帮助用户检测潜在威胁和恶意软件。"
+    },
+    {
+      "name": "天穹动态分析沙箱",
+      "href": "https://sandbox.qianxin.com/sscc-tq-web/tq-sandbox",
+      "description": "奇安信技术研究院旗下的天穹沙箱。"
+    },
+    {
+      "name": "TinyPNG",
+      "href": "https://tinify.cn/",
+      "description": "TinyPNG – 智能压缩您的WebP、JPEG和PNG图片"
+    },
+    {
+      "name": "IT Tools",
+      "href": "https://it-tools.tech/",
+      "description": "开源的在线工具集合，助力开发人员和IT工作者，涵盖加密解密、数据转换、网络工具、开发辅助等场景。"
+    },
+    {
+      "href": "https://github.com/NickeManarin/ScreenToGif/releases",
+      "name": "ScreenToGif",
+      "description": "GIF制作。"
+    },
+
+    {
+      "href": "https://www.netlimiter.com/",
+      "name": "NetLimiter",
+      "description": "网络流量限速与防火墙工具 KeyGen"
+    }
+  ],
+  "Software": [
+    {
+      "href": "https://github.com/sandboxie-plus/Sandboxie",
+      "name": "Sandboxie Plus",
+      "description": "基于沙盒的隔离软件，管住「不听话」的 Windows 软件。"
+    },
+    {
+      "href": "https://geekuninstaller.com/",
+      "name": "Geek Uninstaller",
+      "description": "免费，快捷、高效的卸载工具。"
+    },
+    {
+      "href": "https://github.com/NickeManarin/ScreenToGif/releases",
+      "name": "ScreenToGif",
+      "description": "GIF制作。"
+    },
+    {
+      "href": "https://www.netlimiter.com/",
+      "name": "NetLimiter",
+      "description": "网络流量限速与防火墙工具 KeyGen"
+    },
+    {
+      "href": "https://github.com/mihomo-party-org/clash-party/releases",
+      "name": "mihomo-party",
+      "description": "Another Mihomo GUI。"
+    },
+    {
+      "href": "https://f-droid.org/zh_Hans/",
+      "name": "F-Droid",
+      "description": "Android软件下载。"
+    },
+    {
+      "href": "https://termux.dev/cn/index.html",
+      "name": "Termux",
+      "description": "Android的终端模拟器应用程序。"
+    },
+    {
+      "href": "https://github.com/hiddify/hiddify-app/releases",
+      "name": "hiddify-app",
+      "description": "基于 Sing-box 通用代理工具的跨平台代理客户端。"
+    }
+  ],
+  "AI": [
+    {
+      "name": "秘塔AI搜索",
+      "href": "https://metaso.cn/",
+      "description": "秘塔AI搜索是由秘塔科技推出的一款AI搜索引擎，秘塔科技致力于用算力换人力，为你的工作、学习赋能。"
+    },
+    {
+      "name": "Qwen Chat",
+      "href": "https://chat.qwen.ai/",
+      "description": "Qwen Chat 是阿里通义团队推出的一个基于网页的 AI 助手，可与您互动、创建内容、解决问题，并通过智能语言技术支持您的任务。"
+    },
+    {
+      "name": "千问-Qwen最新模型体验-通义千问",
+      "href": "https://www.qianwen.com/chat",
+      "description": "千问是阿里巴巴全新推出的AI对话助手，使用阿里最新最全的Qwen大模型。"
+    },
+    {
+      "name": "智谱清言",
+      "href": "https://chatglm.cn/main/alltoolsdetail",
+      "description": "智谱清言，是北京智谱华章科技有限公司推出的生成式AI助手"
+    },
+    {
+      "name": "豆包 - 字节跳动旗下 AI 智能助手",
+      "href": "https://www.doubao.com/chat/",
+      "description": "豆包是字节跳动公司基于云雀模型开发的AI工具，支持网页 Web 平台, Windows/macOS 电脑版客户端，iOS 以及安卓平台。"
+    },
+    {
+      "name": "百度文心助手",
+      "href": "https://chat.baidu.com/search",
+      "description": "百度文心助手，一站式解决复杂问题，激发PC端超级生产力！"
+    },
+    {
+      "name": "夸克AI",
+      "href": "https://ai.quark.cn/",
+      "description": "阿里巴巴旗下智能搜索与效率工具！"
+    },
+    {
+      "name": "Z.ai Chat",
+      "href": "https://chat.z.ai/",
+      "description": " Z.ai 是智谱面向全球推出的AI模型体验平台,基于开源GLM模型的智能AI助手。"
+    },
+    {
+      "name": "Trae",
+      "href": "https://www.trae.cn/",
+      "description": "字节跳动发布的AI原生编程工具。"
+    },
+    {
+      "name": "Qoder",
+      "href": "https://qoder.com/",
+      "description": "阿里巴巴推出的 AI Agentic 编程工具。"
+    },
+    {
+      "name": "CodeBuddy",
+      "href": "https://copilot.tencent.com/",
+      "description": "腾讯云推出的 AI 编程助手，同时支持插件、IDE 和 CLI 三种编程形态。"
+    },
+    {
+      "name": "通义灵码",
+      "href": "https://lingma.aliyun.com/lingma",
+      "description": "阿里推出的基于通义大模型的 AI 研发辅助工具。"
+    },
+    {
+      "name": "OpenCode",
+      "href": "https://opencode.ai/",
+      "description": "OpenCode 是一个完全免费、开源的 Claude Code 替代品，内置免费模型或连接任何提供商的模型。"
+    },
+    {
+      "name": "Cherry Studio",
+      "href": "https://cherry-ai.com/",
+      "description": "一款集多模型对话、知识库管理、AI 绘画、翻译等功能于一体的全能 AI 助手平台。"
+    },
+    {
+      "name": "ima知识库",
+      "href": "https://ima.qq.com/",
+      "description": "ima.copilot（简称ima）是一款以知识库为核心的AI工作台产品，已接入腾讯混元大模型和DeepSeek R1模型满血版。"
+    }
+  ]
+}
