@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="zh">
+  <head>
+    <meta charset="UTF-8" />
+    <title>书签合并去重排序工具</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        margin: 20px;
+      }
+
+      input,
+      button {
+        margin: 10px 0;
+      }
+
+      #log {
+        white-space: pre-wrap;
+        background: #f5f5f5;
+        padding: 10px;
+        border: 1px solid #ccc;
+      }
+    </style>
+  </head>
+
+  <body>
+    <h2>书签合并去重排序工具(注意会丢失文件夹层级)</h2>
+    <p>
+      纯前端运行：不上传数据，隐私安全。<br />
+      支持多文件合并：可一次性合并多个导出的书签文件。<br />
+      去重排序规则：按 URL 精确匹配去重，添加时间由新到旧排序。<br />
+      兼容性好：支持 Chrome、Edge、Firefox 导出的 HTML 格式。
+    </p>
+    <p>选择一个或多个导出的书签 HTML 文件：</p>
+    <input type="file" id="fileInput" multiple accept=".html" />
+    <button id="resetBtn">清空选择</button>
+    <br />
+    <button id="processBtn">开始去重并下载</button>
+    <p>日志：</p>
+    <div id="log"></div>
+
+    <script>
+      document
+        .getElementById("processBtn")
+        .addEventListener("click", async () => {
+          const files = document.getElementById("fileInput").files;
+          if (!files.length) {
+            alert("请先选择书签 HTML 文件！");
+            return;
+          }
+
+          let allLinks = new Map(); // URL -> {title, add_date}
+          let originalLinksNum = 0;
+          let log = "";
+
+          for (let file of files) {
+            log += `读取文件: ${file.name} (${(file.size / 1024).toFixed(
+              2
+            )} KB)\n`;
+            const text = await file.text();
+
+            // 用 DOMParser 解析 HTML
+            const parser = new DOMParser();
+            const doc = parser.parseFromString(text, "text/html");
+
+            const anchors = doc.querySelectorAll("a[href]");
+            originalLinksNum = originalLinksNum + anchors.length;
+            anchors.forEach((a) => {
+              const url = a.getAttribute("href").trim();
+              const title = a.textContent.trim();
+              const addDate = a.getAttribute("add_date") || "";
+              if (!addDate) {
+                console.log(url, "no addDate");
+              }
+              if (!allLinks.has(url)) {
+                allLinks.set(url, { title, addDate });
+              }
+            });
+          }
+
+          log += `原总链接数 ${originalLinksNum}, 去重后: ${allLinks.size}\n`;
+          // 排序
+          allLinks[Symbol.iterator] = function* () {
+            yield* [...this.entries()].sort(
+              (a, b) => Number(b[1].addDate) - Number(a[1].addDate)
+            );
+          };
+
+          // 生成新的书签 HTML
+          let output = `<!DOCTYPE NETSCAPE-Bookmark-file-1>\n<!-- This is an automatically generated file. -->\n<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=UTF-8">\n<TITLE>Bookmarks</TITLE>\n<H1>Bookmarks</H1>\n<DL><p>\n`;
+        
+          for (let [url, data] of allLinks) {
+            // get data sorted
+            output += `<DT><A HREF="${url}" ADD_DATE="${data.addDate}">${data.title}</A>\n`;
+          }
+          output += `</DL><p>\n`;
+
+          // 下载文件
+          const blob = new Blob([output], { type: "text/html" });
+          const a = document.createElement("a");
+          a.href = URL.createObjectURL(blob);
+          a.download = "merge_bookmarks.html";
+          a.click();
+
+          document.getElementById("log").textContent = log;
+        });
+
+      window.onload = function () {
+        var fileInput = document.getElementById("fileInput");
+        fileInput.value = "";
+      };
+      document
+        .getElementById("resetBtn")
+        .addEventListener("click", function () {
+          const fileInput = document.getElementById("fileInput");
+          fileInput.value = ""; // 清空已选文件
+        });
+    </script>
+  </body>
+</html>

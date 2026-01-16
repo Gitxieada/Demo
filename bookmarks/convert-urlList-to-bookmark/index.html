@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+
+<head>
+   <title>书签HTML生成器</title>
+   <meta name="description" content="将URL列表转换为书签">
+   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   <link rel="stylesheet" href="./css/bootstrap.min.css">
+   <link rel="stylesheet" href="./css/styles.css">
+
+</head>
+
+<body>
+   <div class="container">
+      <div class="row">
+         <div class="col-sm-12 mx-auto p-3 mt-4 text-center">
+            <div class="header-title">
+               <h1 class="wv-heading--title">
+                  书签HTML生成器
+               </h1>
+               <h2 class="wv-heading--subtitle p-3">
+                  可将URL列表转换为书签，适用于所有主流浏览器。
+               </h2>
+            </div>
+            <p class="small mt-3">注意：每个URL必须另起一行输入 ； 空行将被跳过 ；如未输入名称，书签将以网址作为名称创建； 若未指定文件夹名称，书签将不进行分组。</p>
+         </div>
+      </div>
+      <div class="row">
+         <div class="col-sm-12 mx-auto">
+            <div class="form-group">
+               <input type="text" name="folder-name" class="form-control my-input rounded-0" autocomplete="off"
+                  id="folder-name" placeholder="文件夹名称（可选）">
+            </div>
+         </div>
+      </div>
+      <div class="row no-gutters">
+         <div class="col-sm-6 mx-auto">
+            <textarea class="form-control my-input rounded-0" id="bookmark-urls"
+               placeholder="请输入URL，每个URL必须另起一行输入"></textarea>
+         </div>
+         <div class="col-sm-6 mx-auto">
+            <textarea class="form-control my-input rounded-0" id="bookmark-names" placeholder="请输入URL对应的名称"></textarea>
+         </div>
+      </div>
+      <div class="row">
+         <div class="col-sm-12 mx-auto mb-5">
+            <button class=" btn btn-block send-button tx-tfm text-center" id="download-button"
+               onclick="download()">开始生成并下载</button>
+         </div>
+      </div>
+   </div>
+   <script src="./js/jquery.slim.min.js"></script>
+   <script src="./js/bootstrap.min.js"></script>
+
+   <script>
+      // 本项目参考 https://github.com/atkinsio/bookmarks-html-generator  , 并在此基础上做了部分修改。
+      function download() {
+
+         var folderName = document.getElementById("folder-name").value;
+         var bookmarkUrls = document.getElementById("bookmark-urls").value.split("\n");
+         var bookmarkNames = document.getElementById("bookmark-names").value.split("\n");
+
+         var output = `<!DOCTYPE NETSCAPE-Bookmark-file-1>
+    <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=UTF-8">
+    <TITLE>Bookmarks</TITLE>
+    <H1>Bookmarks</H1>
+    <DL><p>`
+
+         // Only add Folder to output if folder name specified
+         if (folderName != "") {
+            output = output.concat(`
+        <DT><H3>${folderName}</H3>
+        <DL><p>`)
+         }
+
+         for (var i = 0; i < bookmarkUrls.length; i++) {
+
+            // Skip blank lines
+            if (bookmarkUrls[i] == "") {
+               continue;
+            }
+
+            // Default bookmark name to url string if name not specified
+            if (bookmarkNames[i] == "" || typeof bookmarkNames[i] == 'undefined') {
+               bookmarkNames[i] = bookmarkUrls[i];
+            }
+
+            // Add individual bookmark to output
+            var bookmark = `
+        <DT><A HREF="${bookmarkUrls[i]}">${bookmarkNames[i]}</A>`
+            output = output.concat(bookmark)
+         }
+
+         // Only close folder tag if folder name specified
+         if (folderName != "") {
+            output = output.concat(`
+        </DL><p>`)
+         }
+
+         // Close final tag
+         output = output.concat(`
+        </DL><p>`);
+
+         // Build downloadable .html file with content from output variable
+         var element = document.createElement('a');
+         element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(output));
+         element.setAttribute('download', "bookmarks.html");
+
+         element.style.display = 'none';
+         document.body.appendChild(element);
+
+         element.click();
+
+         document.body.removeChild(element);
+
+      }
+      window.onload = function () {
+         document.getElementById("bookmark-urls").value = "";
+
+         document.getElementById("bookmark-names").value = "";
+      };
+
+
+
+   </script>
+</body>

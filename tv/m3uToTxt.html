@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="一个简单的在线M3u转TXT格式工具，纯前端处理。">
+    <meta name="keywords" content="在线M3u转TXT,M3u转换">
+    <title>在线M3u转TXT</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 10px;
+        }
+
+        .centered-header {
+            text-align: center;
+        }
+
+        textarea {
+            width: 100%;
+            height: 150px;
+            font-size: 10px;
+            margin-bottom: 10px;
+        }
+
+        textarea::placeholder {
+            color: #666666;
+            font-size: 14px;
+        }
+
+        .button-container {
+            display: flex;
+            justify-content: center;
+            /* 水平居中 */
+        }
+
+        button {
+            padding: 10px 10px;
+            font-size: 14px;
+            cursor: pointer;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            margin: 5px 3px;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+
+        #result {
+            white-space: pre-wrap;
+            background-color: #f9f9f9;
+            padding: 10px;
+            border: 1px solid #ccc;
+            margin-top: 10px;
+            max-width: 100%;
+            overflow-wrap: break-word;
+            white-space: pre-wrap;
+        }
+
+
+        .info {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            border: 1px solid #666666;
+            padding: 10px;
+        }
+
+        h3 {
+            color: #333;
+            margin-bottom: 10px;
+        }
+
+        #copyright {
+            margin-top: 20px;
+            color: #666;
+            text-align: center;
+            font-size: 12px;
+        }
+
+        #copyright a {
+            text-decoration: none;
+            /* 去掉下划线 */
+            color: inherit;
+            /* 继承父元素的颜色 */
+        }
+    </style>
+</head>
+
+<body>
+    <h1 class="centered-header">在线M3u转TXT</h1>
+    <textarea id="inputM3u" placeholder="请输入或粘贴M3u文本..."></textarea>
+    <br>
+    <div class="button-container">
+        <button onclick="convertToTxt()">转换</button>
+        <button onclick="clearScreen()">清除屏幕</button>
+        <button onclick="copyContent()">复制结果</button>
+    </div>
+    <br>
+    <label>转换结果:</label>
+    <div id="result"></div>
+    <br><br>
+    <div class="info">
+        <h3>参考样本</h3>
+        <p>M3u电视源转换成TXT</p>
+        <pre style="font-size: 13px; width: 100%; overflow-x: auto;">
+        原文本:
+        <span style="color: blue;">
+       #EXTM3U x-tvg-url="https://gh-proxy.com/https://raw.githubusercontent.com/fanmingming/live/main/e.xml"
+       #EXTINF:-1 tvg-name="CCTV1" tvg-logo="https://gh-proxy.com/https://raw.githubusercontent.com/fanmingming/live/main/tv/CCTV1.png" group-title="央视",CCTV-1 综合
+       http://iptv.huuc.edu.cn/hls/cctv1hd.m3u8
+       #EXTINF:-1 tvg-id="CCTV1" tvg-logo="https://gh-proxy.com/https://raw.githubusercontent.com/fanmingming/live/main/tv/CCTV1.png" group-title="央视" catchup="append" catchup-source="?stime=${(b)yyyyMMddHHmmss}&etime=${(e)yyyyMMddHHmmss}&type=lbacks",CCTV-1 综合
+       webview://https://tv.cctv.com/live/cctv1/
+       #EXTINF:-1 tvg-name="CCTV1" tvg-logo="https://gh-proxy.com/https://raw.githubusercontent.com/fanmingming/live/main/tv/CCTV1.png" group-title="央视",CCTV-1 综合
+       webview://https://yangshipin.cn/tv/home?pid=600001859
+       
+       #EXTINF:-1 tvg-name="CCTV2" tvg-logo="https://gh-proxy.com/https://raw.githubusercontent.com/fanmingming/live/main/tv/CCTV2.png" group-title="央视" catchup="append" catchup-source="?stime=${(b)yyyyMMddHHmmss}&etime=${(e)yyyyMMddHHmmss}&type=lbacks",CCTV-2 财经
+       webview://https://tv.cctv.com/live/cctv2/
+       #EXTINF:-1 tvg-name="CCTV2" tvg-logo="https://gh-proxy.com/https://raw.githubusercontent.com/fanmingming/live/main/tv/CCTV2.png" group-title="央视",CCTV-2 财经
+       webview://https://yangshipin.cn/tv/home?pid=600001800
+
+       #EXTINF:-1 tvg-id="湖北卫视" tvg-logo="https://gh-proxy.com/https://raw.githubusercontent.com/fanmingming/live/main/tv/湖北卫视.png" group-title="卫视",湖北卫视
+       webview://https://yangshipin.cn/tv/home?pid=600002508
+       
+       #EXTINF:-1 tvg-name="北京卫视" tvg-logo="https://gh-proxy.com/https://raw.githubusercontent.com/fanmingming/live/main/tv/北京卫视.png" group-title="卫视",北京卫视
+       webview://https://yangshipin.cn/tv/home?pid=600002309
+    </span> 
+        转换结果:
+        <span style="color: red;"> 
+      央视,#genre#
+      CCTV1,http://iptv.huuc.edu.cn/hls/cctv1hd.m3u8
+      CCTV1,webview://https://tv.cctv.com/live/cctv1/
+      CCTV1,webview://https://yangshipin.cn/tv/home?pid=600001859
+      CCTV2,webview://https://tv.cctv.com/live/cctv2/
+      CCTV2,webview://https://yangshipin.cn/tv/home?pid=600001800
+      卫视,#genre#
+      湖北卫视,webview://https://yangshipin.cn/tv/home?pid=600002508
+      北京卫视,webview://https://yangshipin.cn/tv/home?pid=600002309
+   </span> </pre>
+    </div>
+    <div id="copyright">
+        <p>© 2026 <a href="https://gitxieada.github.io/"> gitxieada</a> All Rights Reserved.</p>
+    </div>
+    <script>
+
+        // 解析m3u数据
+        function parseM3u(m3uData, callback) {
+            // 将文件内容按行分割成数组并清除空行
+            let lines = m3uData.split("\n").filter((line) => line.trim() !== "");
+            // 缓存节目信息行的数据
+            let lineInfo = null;
+            for (let index = 0; index < lines.length; index++) {
+                const line = lines[index].trim();
+                // 固定第一行是#EXTM3U开头 用于配置EPG
+                if (line.startsWith("#EXTM3U")) {
+                    callback({
+                        originLine: line,
+                        lineTag: "#EXTM3U",
+                    });
+
+                    continue; // 跳过后面的逻辑
+                }
+
+                // #EXTINF开头为节目信息
+                if (line.startsWith("#EXTINF")) {
+                    lineInfo = null; // 如果向后查找遇到了#EXTINF开头的行 就结束当前行的查找(清除数据缓存)
+                    const foundNameArr = line.match(/tvg-name="(.*?)"/);
+                    const foundTvgIdArr = line.match(/tvg-id="(.*?)"/);
+                    const foundGroupTitleArr = line.match(/group-title="(.*?)"/);
+                    if ((foundNameArr || foundTvgIdArr) && foundGroupTitleArr) {
+                        const name = foundNameArr ? foundNameArr[1] : foundTvgIdArr[1];
+                        const group = foundGroupTitleArr[1]; // 提取 group-title
+                        const channelName = line.split(",").pop().trim(); // 提取频道名称
+                        // 记录当前行的信息
+                        lineInfo = {
+                            name,
+                            group,
+                            channelName,
+                            originLine: line,
+                            lineTag: "#EXTINF",
+                        };
+                    } else {
+                        console.log("匹配失败", line, 'foundNameArr', foundNameArr, 'foundGroupTitleArr', foundGroupTitleArr, 'foundTvgIdArr', foundTvgIdArr);
+                    }
+
+                    continue; // 跳过后面的逻辑
+                }
+
+                // 向后查找地址 是地址且有缓存就callback，不是就继续向后查找
+                if (lineInfo) {
+                    // 判断当前行是否是地址
+                    const isUrl = ["http://", "https://"].some((key) =>
+                        line.includes(key)
+                    );
+                    if (isUrl) {
+                        callback({
+                            lineInfo,
+                            lineTag: lineInfo.lineTag,
+                            originLine: lineInfo.originLine,
+                            url: line,
+                        });
+                        lineInfo = null;
+                    }
+                }
+            }
+        }
+        function m3uToDataList(str) {
+            let res = [];
+            let dataByGroup = {};
+            this.parseM3u(str, ({url, lineTag, lineInfo}) => {
+                // 判断行标签是哪个，上述代码仅解析了#EXTM3U 和 #EXTINF行 其他行解析自行添加代码
+                if (lineTag === "#EXTINF") {
+                    const key = lineInfo.group;
+                    const val = `${lineInfo.name},${url}`;
+                    dataByGroup[key] = dataByGroup[key]
+                        ? [...dataByGroup[key], val]
+                        : [val];
+                }
+            });
+            const groupArr = Object.keys(dataByGroup);
+            groupArr.forEach((group) => {
+                res = [...res, `${group},#genre#`, ...dataByGroup[group]];
+            });
+            console.log("频道数", res.length - groupArr.length);
+            return res;
+        }
+
+        function getTxt(str) {
+            const dataList = this.m3uToDataList(str);
+            if (dataList.length) {
+
+                console.log("dataList", dataList);
+
+            } else {
+                console.log("解析失败")
+            }
+        }
+        function convertToTxt() {
+            const inputM3u = document.getElementById('inputM3u').value.trim();
+            const dataList = this.m3uToDataList(inputM3u);
+            if (dataList.length) {
+                // 将结果显示在指定元素中
+                document.getElementById('result').textContent = dataList.join("\n");
+                console.log("dataList", dataList);
+
+            } else {
+                console.log("解析失败")
+            }
+        }
+
+
+        function clearScreen() {
+            document.getElementById('inputM3u').value = '';
+            document.getElementById('result').textContent = ''; // 或者使用 innerHTML: document.getElementById('result').innerHTML = '';
+        }
+
+        function copyContent() {
+            const result = document.getElementById('result').textContent;
+            if (!result) return;
+
+            const textArea = document.createElement('textarea');
+            textArea.value = result;
+            document.body.appendChild(textArea);
+            textArea.select();
+            document.execCommand('copy');
+            document.body.removeChild(textArea);
+            alert('内容已复制到剪贴板！');
+        }
+
+    </script>
+</body>
+
+</html>

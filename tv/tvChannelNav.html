@@ -1,0 +1,649 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>直播频道导航</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            background-color: #f5f7fa;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        header {
+            background: linear-gradient(135deg, #1e3c72, #2a5298);
+            color: white;
+            padding: 20px 0;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        h1 {
+            font-size: 24px;
+            font-weight: 600;
+        }
+
+        .tabs {
+            display: flex;
+            margin-top: 20px;
+            border-bottom: 1px solid #e0e0e0;
+            overflow-x: auto;
+            white-space: nowrap;
+        }
+
+        .tab {
+            padding: 12px 20px;
+            cursor: pointer;
+            border-bottom: 3px solid transparent;
+            transition: all 0.3s ease;
+            font-weight: 500;
+        }
+
+        .tab:hover {
+            background-color: rgba(0, 0, 0, 0.05);
+        }
+
+        .tab.active {
+            color: #1e3c72;
+            border-bottom-color: #1e3c72;
+        }
+
+        .channel-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .channel-card {
+            background: white;
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .channel-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+        }
+
+        .channel-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .channel-name {
+            font-size: 18px;
+            font-weight: 600;
+            color: #1e3c72;
+        }
+
+        .favorite-btn {
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 20px;
+            color: #ccc;
+            transition: color 0.3s ease;
+        }
+
+        .favorite-btn.active {
+            color: #ff4757;
+        }
+
+        .channel-links {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .link-btn {
+            background: #f0f2f5;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 6px;
+            cursor: pointer;
+            text-align: left;
+            transition: background-color 0.3s ease;
+            font-size: 14px;
+            color: #333;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .link-btn:hover {
+            background-color: #e0e2e5;
+        }
+
+        .link-num {
+            font-size: 12px;
+            color: #666;
+            background: rgba(0, 0, 0, 0.05);
+            padding: 2px 6px;
+            border-radius: 4px;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-content {
+            background: white;
+            border-radius: 10px;
+            padding: 25px;
+            max-width: 500px;
+            width: 90%;
+            max-height: 80vh;
+            overflow-y: auto;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
+            animation: modalOpen 0.3s ease;
+        }
+
+        @keyframes modalOpen {
+            from {
+                opacity: 0;
+                transform: scale(0.8);
+            }
+
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            border-bottom: 1px solid #eee;
+            padding-bottom: 15px;
+        }
+
+        .modal-title {
+            font-size: 20px;
+            font-weight: 600;
+            color: #1e3c72;
+        }
+
+        .close-btn {
+            background: none;
+            border: none;
+            font-size: 24px;
+            cursor: pointer;
+            color: #999;
+            transition: color 0.3s ease;
+        }
+
+        .close-btn:hover {
+            color: #333;
+        }
+
+        .link-options {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .link-option {
+            padding: 15px;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .link-option:hover {
+            background-color: #f5f7fa;
+            border-color: #1e3c72;
+        }
+
+        .link-option-title {
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+
+        .link-option-url {
+            font-size: 14px;
+            color: #666;
+            word-break: break-all;
+        }
+
+        .no-favorites {
+            text-align: center;
+            padding: 40px;
+            color: #999;
+        }
+
+        .no-favorites-icon {
+            font-size: 48px;
+            margin-bottom: 15px;
+        }
+
+        .toast {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(0, 0, 0, 0.8);
+            color: white;
+            padding: 12px 24px;
+            border-radius: 30px;
+            font-size: 14px;
+            z-index: 2000;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .toast.show {
+            opacity: 1;
+        }
+
+        @media (max-width: 768px) {
+            .header-content {
+                flex-direction: column;
+                gap: 15px;
+            }
+
+            .channel-grid {
+                grid-template-columns: repeat(auto-fill, minmax(100%, 1fr));
+            }
+
+            .tabs {
+                padding-bottom: 5px;
+            }
+
+            .tab {
+                padding: 10px 15px;
+                font-size: 14px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <div class="header-content">
+            <h1>直播频道导航</h1>
+            <div id="favoriteCount">收藏: 0</div>
+        </div>
+    </header>
+
+    <div class="container">
+        <div class="tabs">
+            <div class="tab active" data-tab="all">全部频道</div>
+            <div class="tab" data-tab="favorites">我的收藏</div>
+            <div class="tab" data-tab="yangshi">央视</div>
+            <div class="tab" data-tab="weishi">卫视</div>
+        </div>
+
+        <div id="channelContainer" class="channel-grid"></div>
+    </div>
+
+    <div id="linkModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="modal-title">选择直播源</div>
+                <button class="close-btn">&times;</button>
+            </div>
+            <div id="linkOptions" class="link-options"></div>
+        </div>
+    </div>
+
+    <div id="toast" class="toast"></div>
+
+    <script>
+        // 原始数据
+        const rawData =
+            [
+                "央视,#genre#",
+                "CCTV1,webview://https://tv.cctv.com/live/cctv1/",
+                "CCTV1,webview://https://yangshipin.cn/tv/home?pid=600001859",
+                "CCTV2,webview://https://tv.cctv.com/live/cctv2/",
+                "CCTV2,webview://https://yangshipin.cn/tv/home?pid=600001800",
+                "CCTV3,webview://https://tv.cctv.com/live/cctv3/",
+                "CCTV3,webview://https://yangshipin.cn/tv/home?pid=600001801",
+                "CCTV4,webview://https://tv.cctv.com/live/cctv4/",
+                "CCTV4,webview://https://yangshipin.cn/tv/home?pid=600001814",
+                "CCTV5,webview://https://tv.cctv.com/live/cctv5/",
+                "CCTV5,webview://https://yangshipin.cn/tv/home?pid=600001818",
+                "CCTV5,webview://https://tv.cctv.com/live/cctv5plus/",
+                "CCTV5,webview://https://yangshipin.cn/tv/home?pid=600001817",
+                "CCTV6,webview://https://tv.cctv.com/live/cctv6/",
+                "CCTV6,webview://https://yangshipin.cn/tv/home?pid=600108442",
+                "CCTV6,webview://https://www.1905.com/cctv6/live/",
+                "CCTV7,webview://https://tv.cctv.com/live/cctv7/",
+                "CCTV7,webview://https://yangshipin.cn/tv/home?pid=600004092",
+                "CCTV8,webview://https://tv.cctv.com/live/cctv8/",
+                "CCTV8,webview://https://yangshipin.cn/tv/home?pid=600001803",
+                "CCTV9,webview://https://tv.cctv.com/live/cctvjilu/",
+                "CCTV9,webview://https://yangshipin.cn/tv/home?pid=600004078",
+                "CCTV10,webview://https://tv.cctv.com/live/cctv10/",
+                "CCTV10,webview://https://yangshipin.cn/tv/home?pid=600001805",
+                "CCTV12,webview://https://tv.cctv.com/live/cctv12/",
+                "CCTV12,webview://https://yangshipin.cn/tv/home?pid=600001807",
+                "CCTV13,webview://https://tv.cctv.com/live/cctv13/",
+                "CCTV13,webview://https://yangshipin.cn/tv/home?pid=600001811",
+                "CCTV14,webview://https://tv.cctv.com/live/cctvchild/",
+                "CCTV14,webview://https://yangshipin.cn/tv/home?pid=600001809",
+                "CCTV15,webview://https://tv.cctv.com/live/cctv15/",
+                "CCTV15,webview://https://yangshipin.cn/tv/home?pid=600001815",
+                "CCTV16,webview://https://tv.cctv.com/live/cctv16/",
+                "CCTV16,webview://https://yangshipin.cn/tv/home?pid=600098637",
+                "CCTV17,webview://https://tv.cctv.com/live/cctv17/",
+                "CCTV17,webview://https://yangshipin.cn/tv/home?pid=600001810",
+                "CGTN,webview://https://yangshipin.cn/tv/home?pid=600014550",
+                "风云剧场,webview://https://yangshipin.cn/tv/home?pid=600099658",
+                "第一剧场,webview://https://yangshipin.cn/tv/home?pid=600099655",
+                "怀旧剧场,webview://https://yangshipin.cn/tv/home?pid=600099620",
+                "卫视,#genre#",
+                "湖北卫视,webview://https://yangshipin.cn/tv/home?pid=600002508",
+                "深圳卫视,webview://https://yangshipin.cn/tv/home?pid=600002481",
+                "北京卫视,webview://https://yangshipin.cn/tv/home?pid=600002309",
+                "北京卫视,webview://https://www.btime.com/btv/btvsy_index",
+                "江苏卫视,webview://https://yangshipin.cn/tv/home?pid=600002521",
+                "东方卫视,webview://https://yangshipin.cn/tv/home?pid=600002483",
+                "浙江卫视,webview://https://yangshipin.cn/tv/home?pid=600002520",
+                "湖南卫视,webview://https://yangshipin.cn/tv/home?pid=600002475",
+                "广东卫视,webview://https://yangshipin.cn/tv/home?pid=600002485",
+                "广西卫视,webview://https://yangshipin.cn/tv/home?pid=600002509",
+                "黑龙江卫视,webview://https://yangshipin.cn/tv/home?pid=600002498",
+                "海南卫视,webview://https://yangshipin.cn/tv/home?pid=600002506",
+                "重庆卫视,webview://https://yangshipin.cn/tv/home?pid=600002531",
+                "四川卫视,webview://https://yangshipin.cn/tv/home?pid=600002516",
+                "河南卫视,webview://https://yangshipin.cn/tv/home?pid=600002525",
+                "东南卫视,webview://https://yangshipin.cn/tv/home?pid=600002484",
+                "贵州卫视,webview://https://yangshipin.cn/tv/home?pid=600002490",
+                "江西卫视,webview://https://yangshipin.cn/tv/home?pid=600002503",
+                "辽宁卫视,webview://https://yangshipin.cn/tv/home?pid=600002505",
+                "安徽卫视,webview://https://yangshipin.cn/tv/home?pid=600002532",
+                "河北卫视,webview://https://yangshipin.cn/tv/home?pid=600002493",
+                "山东卫视,webview://https://yangshipin.cn/tv/home?pid=600002513",
+                "天津卫视,webview://https://yangshipin.cn/tv/home?pid=600152137",
+                "吉林卫视,webview://https://yangshipin.cn/tv/home?pid=600190405",
+                "陕西卫视,webview://https://yangshipin.cn/tv/home?pid=600190400",
+                "甘肃卫视,webview://https://yangshipin.cn/tv/home?pid=600190408",
+                "宁夏卫视,webview://https://yangshipin.cn/tv/home?pid=600190737",
+                "内蒙古卫视,webview://https://yangshipin.cn/tv/home?pid=600190401",
+                "云南卫视,webview://https://yangshipin.cn/tv/home?pid=600190402",
+                "山西卫视,webview://https://yangshipin.cn/tv/home?pid=600190407",
+                "江苏卫视,webview://https://live.jstv.com",
+                "广东卫视,webview://https://www.gdtv.cn/tvChannelDetail/43",
+                "广东珠江,webview://https://www.gdtv.cn/tvChannelDetail/44",
+                "广东新闻,webview://https://www.gdtv.cn/tvChannelDetail/45",
+                "大湾区卫视,webview://https://www.gdtv.cn/tvChannelDetail/51",
+                "大湾区卫视（海外版）,webview://https://www.gdtv.cn/tvChannelDetail/46",
+                "广东移动,webview://https://www.gdtv.cn/tvChannelDetail/74",
+                "东方卫视,webview://https://live.kankanews.com/huikan?id=1",
+                "上海新闻综合,webview://https://live.kankanews.com/huikan?id=2",
+                "上海魔都眼,webview://https://live.kankanews.com/huikan?id=11",
+                "上海第一财经,webview://https://live.kankanews.com/huikan?id=5",
+                "上海新纪实,webview://https://live.kankanews.com/huikan?id=12",
+                "上海都市频道,webview://https://live.kankanews.com/huikan?id=4"
+            ];
+
+        // 解析数据并分组
+        let channels = {};
+        let channelsNameArr = []
+        let group = '全部频道';
+        rawData.forEach(item => {
+            if (item.endsWith(',#genre#')) {
+                group = item.split(',')[0];
+            } else {
+                const [name, url] = item.split(',', 2);
+
+                if (!channels[name]) {
+                    channels[name] = {
+                        links: [],
+                        group
+                    };
+                }
+
+
+                // 清理 URL（移除 webview:// 前缀）
+                const cleanUrl = url.replace('webview://', '');
+                if (!channels[name].links.includes(cleanUrl)) {
+                    channels[name].links.push(cleanUrl);
+                }
+            }
+
+
+        });
+        channelsNameArr = Object.keys(channels)
+
+
+        console.log(channels, channelsNameArr)
+
+
+        // 从localStorage获取收藏的频道
+        function getFavorites() {
+            const favorites = localStorage.getItem('tvFavorites');
+            return favorites ? JSON.parse(favorites) : [];
+        }
+
+        // 保存收藏的频道到localStorage
+        function saveFavorites(favorites) {
+            localStorage.setItem('tvFavorites', JSON.stringify(favorites));
+            updateFavoriteCount();
+        }
+
+        // 更新收藏计数
+        function updateFavoriteCount() {
+            const favorites = getFavorites();
+            document.getElementById('favoriteCount').textContent = `收藏: ${favorites.length}`;
+        }
+
+        // 切换收藏状态
+        function toggleFavorite(channelName) {
+            let favorites = getFavorites();
+            const index = favorites.indexOf(channelName);
+
+            if (index === -1) {
+                favorites.push(channelName);
+                showToast(`已收藏 ${channelName}`);
+            } else {
+                favorites.splice(index, 1);
+                showToast(`已取消收藏 ${channelName}`);
+            }
+
+            saveFavorites(favorites);
+            renderChannels(currentTab);
+        }
+
+        // 显示提示消息
+        function showToast(message) {
+            const toast = document.getElementById('toast');
+            toast.textContent = message;
+            toast.classList.add('show');
+
+            setTimeout(() => {
+                toast.classList.remove('show');
+            }, 2000);
+        }
+
+        // 打开链接选择模态框
+        function openLinkModal(links, name) {
+            const modal = document.getElementById('linkModal');
+            const linkOptions = document.getElementById('linkOptions');
+
+            linkOptions.innerHTML = '';
+
+            links.forEach(link => {
+                const option = document.createElement('div');
+                option.className = 'link-option';
+                option.innerHTML = `
+                    <div class="link-option-title">${ name}</div>
+                    <div class="link-option-url">${link}</div>
+                `;
+                option.addEventListener('click', () => {
+                    window.open(link, '_blank');
+                    modal.style.display = 'none';
+                });
+                linkOptions.appendChild(option);
+            });
+
+            modal.style.display = 'flex';
+        }
+
+        // 关闭模态框
+        function closeModal() {
+            document.getElementById('linkModal').style.display = 'none';
+        }
+
+        // 渲染频道列表
+        function renderChannels(tab) {
+            const container = document.getElementById('channelContainer');
+            container.innerHTML = '';
+
+            let channelsToRender = [];
+            const favorites = getFavorites();
+
+            switch (tab) {
+                case 'all':
+                    channelsToRender = channelsNameArr;
+                    break;
+                case 'favorites':
+                    channelsToRender = channelsNameArr.filter(name => favorites.includes(name));
+                    if (channelsToRender.length === 0) {
+                        container.innerHTML = `
+                            <div class="no-favorites">
+                                <div class="no-favorites-icon">📺</div>
+                                <p>您还没有收藏任何频道</p>
+                                <p>点击频道卡片上的爱心图标即可收藏</p>
+                            </div>
+                        `;
+                        return;
+                    }
+                    break;
+                case 'yangshi':
+                    channelsToRender = channelsNameArr.filter(name => channels[name].group === '央视');
+                    break;
+                case 'weishi':
+                    channelsToRender = channelsNameArr.filter(name => channels[name].group === '卫视');
+                    break;
+            }
+
+            channelsToRender.forEach(name => {
+                const channel = channels[name];
+                const isFavorite = favorites.includes(name);
+                const card = document.createElement('div');
+                card.className = 'channel-card';
+
+                const linksHtml = `
+                    <button class="link-btn" data-url="${channel.links[0]}">
+                        <span>观看直播</span>
+                        <span class="link-num">${channel.links.length}个线路</span>
+                    </button>
+                `
+
+                card.innerHTML = `
+                    <div class="channel-header">
+                        <div class="channel-name">${name}</div>
+                        <button class="favorite-btn ${isFavorite ? 'active' : ''}" data-channel="${name}">
+                               ${isFavorite ? '★' : '☆'}
+                        </button>
+                    </div>
+                    <div class="channel-links">
+                        ${linksHtml}
+                    </div>
+                `;
+
+
+                // 如果有多个链接，添加点击事件打开模态框
+                if (channel.links.length > 1) {
+                    card.addEventListener('click', (e) => {
+                        if (!e.target.classList.contains('favorite-btn')) {
+                            openLinkModal(channel.links, name);
+                        }
+                    });
+                } else {
+                    // 如果只有一个链接，直接打开
+                    const linkBtn = card.querySelector('.link-btn');
+                    linkBtn.addEventListener('click', () => {
+                        window.open(linkBtn.dataset.url, '_blank');
+                    });
+                }
+
+                // 添加收藏按钮事件
+                const favoriteBtn = card.querySelector('.favorite-btn');
+                favoriteBtn.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    toggleFavorite(name);
+                });
+
+                container.appendChild(card);
+            });
+        }
+
+        // 当前选中的标签
+        let currentTab = 'all';
+
+        // 初始化
+        document.addEventListener('DOMContentLoaded', () => {
+            // 渲染初始频道列表
+            renderChannels('all');
+            updateFavoriteCount();
+
+            // 标签切换事件
+            document.querySelectorAll('.tab').forEach(tab => {
+                tab.addEventListener('click', () => {
+                    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+                    tab.classList.add('active');
+                    currentTab = tab.dataset.tab;
+                    renderChannels(currentTab);
+                });
+            });
+
+            // 模态框关闭事件
+            document.querySelector('.close-btn').addEventListener('click', closeModal);
+            document.getElementById('linkModal').addEventListener('click', (e) => {
+                if (e.target.id === 'linkModal') {
+                    closeModal();
+                }
+            });
+        });
+    </script>
+</body>
+
+</html>

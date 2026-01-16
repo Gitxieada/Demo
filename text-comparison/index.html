@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>文本对比工具</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+    <div class="container">
+        <div class="card mb-6">
+            <div class="card-header">
+                <h2 class="card-title">文本对比工具</h2>
+                <p class="card-description">输入两段文本，查看它们之间的差异</p>
+                <p class="card-description">参考修改自 https://github.com/xinxi2024/Text-comparison 仓库</p>
+            </div>
+            <div class="card-content">
+                <div class="tabs">
+                    <div class="tabs-header">
+                        <div class="tabs-list">
+                            <button class="tab-trigger active" data-tab="side-by-side">并排视图</button>
+                            <button class="tab-trigger" data-tab="inline">内联视图</button>
+                        </div>
+                        <div class="action-buttons">
+                            <button class="btn btn-outline" id="swap-btn">
+                                <span class="material-icons">swap_horiz</span>
+                                交换
+                            </button>
+                            <button class="btn btn-outline" id="clear-btn">
+                                <span class="material-icons">delete</span>
+                                清除
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="tab-content active" id="side-by-side">
+                        <div class="grid-2">
+                            <div class="text-area-container">
+                                <div class="area-header">
+                                    <h3>原始文本</h3>
+                                    <button class="btn btn-ghost copy-btn" data-target="text1" disabled>
+                                        <span class="material-icons">content_copy</span>
+                                        复制
+                                    </button>
+                                </div>
+                                <textarea id="text1" class="text-input" placeholder="在此输入原始文本..."></textarea>
+                            </div>
+                            <div class="text-area-container">
+                                <div class="area-header">
+                                    <h3>新文本</h3>
+                                    <button class="btn btn-ghost copy-btn" data-target="text2" disabled>
+                                        <span class="material-icons">content_copy</span>
+                                        复制
+                                    </button>
+                                </div>
+                                <textarea id="text2" class="text-input" placeholder="在此输入新文本..."></textarea>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="tab-content" id="inline">
+                        <div class="grid-1">
+                            <div class="text-area-container">
+                                <div class="area-header">
+                                    <h3>原始文本</h3>
+                                    <button class="btn btn-ghost copy-btn" data-target="text1-inline" disabled>
+                                        <span class="material-icons">content_copy</span>
+                                        复制
+                                    </button>
+                                </div>
+                                <textarea id="text1-inline" class="text-input" placeholder="在此输入原始文本..."></textarea>
+                            </div>
+                            <div class="text-area-container">
+                                <div class="area-header">
+                                    <h3>新文本</h3>
+                                    <button class="btn btn-ghost copy-btn" data-target="text2-inline" disabled>
+                                        <span class="material-icons">content_copy</span>
+                                        复制
+                                    </button>
+                                </div>
+                                <textarea id="text2-inline" class="text-input" placeholder="在此输入新文本..."></textarea>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card diff-result" id="diff-container" style="display: none;">
+            <div class="card-header">
+                <h2 class="card-title">差异结果</h2>
+                <p class="card-description">显示两段文本之间的差异</p>
+            </div>
+            <div class="card-content">
+                <div class="diff-content" id="diff-result"></div>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+
+</html>

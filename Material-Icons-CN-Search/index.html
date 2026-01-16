@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Material Icons 中文搜索与速查表</title>
+    <link href="css/style.css" rel="stylesheet">
+    <link href="iconfont/material-icons.css" rel="stylesheet">
+</head>
+
+<body>
+    <header>
+        <h1>Material Icons 对照表</h1>
+        <p>快速查找和复制使用 Material Icons 图标。</p>
+        <a href="https://github.com/marella/material-icons" class="btn btn-outline-white" target="_blank">Material Icons GitHub</a>
+        <a href="https://github.com/30Blog/Material-Icons-CN-Search" class="btn btn-outline-white" target="_blank">修改自30Blog的Material Icons CN Search项目</a>
+
+    </header>
+    <div class="search-box">
+        <input type="text" id="search" placeholder="搜索图标..." oninput="filterIcons()">
+    </div>
+    <nav>
+        <a href="#filled">实心(Filled)</a>
+        <a href="#outlined">描边(Outlined)</a>
+        <a href="#round">圆角(Round)</a>
+        <a href="#sharp">锐角(Sharp)</a>
+        <a href="#two-tone">双色(Two Tone)</a>
+    </nav>
+    <div id="filled" class="icon-section">
+        <h2>实心(Filled)</h2>
+        <div class="icon-grid" id="icon-grid-filled">
+            <!-- 图标将通过 JavaScript 动态插入 -->
+        </div>
+    </div>
+    <div id="outlined" class="icon-section">
+        <h2>描边(Outlined)</h2>
+        <div class="icon-grid" id="icon-grid-outlined">
+            <!-- 图标将通过 JavaScript 动态插入 -->
+        </div>
+    </div>
+    <div id="round" class="icon-section">
+        <h2>圆角(Round)</h2>
+        <div class="icon-grid" id="icon-grid-round">
+            <!-- 图标将通过 JavaScript 动态插入 -->
+        </div>
+    </div>
+    <div id="sharp" class="icon-section">
+        <h2>锐角(Sharp)</h2>
+        <div class="icon-grid" id="icon-grid-sharp">
+            <!-- 图标将通过 JavaScript 动态插入 -->
+        </div>
+    </div>
+    <div id="two-tone" class="icon-section">
+        <h2>双色(Two Tone)</h2>
+        <div class="icon-grid" id="icon-grid-two-tone">
+            <!-- 图标将通过 JavaScript 动态插入 -->
+        </div>
+    </div>
+
+    <div class="backtop" style="right: 25px; bottom: 150px;" onclick="topFunction()"><span class="material-icons">vertical_align_top</span></i></div>
+    <div id="toast" class="toast"></div>
+    <script src="js/icons.js"></script>
+    <script src="js/app.js"></script>
+</body>
+
+</html>
